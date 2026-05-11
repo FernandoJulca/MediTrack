@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="DTOs\Autenticacion\" />
+    <Folder Include="DTOs\Citas\" />
+    <Folder Include="DTOs\Inventario\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Mapeos\" />
+    <Folder Include="Servicios\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MediTrack.Dominio\MediTrack.Dominio.csproj" />
+  </ItemGroup>
+
+</Project>

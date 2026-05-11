@@ -1,0 +1,72 @@
+# ========================
+#   MediTrack — .gitignore
+# ========================
+
+# Binarios y compilados
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+!.vscode/extensions.json
+
+# Rider (JetBrains)
+.idea/
+*.sln.iml
+
+# Archivos de configuración local (contienen secrets)
+appsettings.Development.json
+appsettings.Local.json
+
+# Publicaciones
+publish/
+**/publish/
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+!**/packages/repositories.config
+
+# Entity Framework Migraciones generadas automáticamente
+# (comenta esta línea si quieres versionar las migraciones)
+# **/Migraciones/
+
+# Archivos de cobertura de tests
+coverage/
+*.coverage
+*.coveragexml
+TestResults/
+
+# Logs
+*.log
+logs/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Variables de entorno
+.env
+.env.local
+.env.*.local
+
+# Certificados y llaves
+*.pfx
+*.key
+*.pem
+*.cer
+
+# Archivos temporales
+*.tmp
+*.temp
+~$*

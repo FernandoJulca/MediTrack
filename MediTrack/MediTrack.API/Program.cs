@@ -1,4 +1,12 @@
+using MediTrack.Infraestructura.Datos;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Base de datos
+builder.Services.AddDbContext<ContextoAplicacion>(opciones =>
+    opciones.UseSqlServer(builder.Configuration.GetConnectionString("ConexionPrincipal")));
+
 
 // Add services to the container.
 

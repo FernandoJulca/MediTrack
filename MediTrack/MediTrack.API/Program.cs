@@ -15,6 +15,7 @@ builder.Services.AddDbContext<ContextoAplicacion>(opciones =>
 
 // Servicios
 builder.Services.AddScoped<IServicioAutenticacion, ServicioAutenticacion>();
+builder.Services.AddScoped<IServicioInventario, ServicioInventario>();
 
 // JWT
 var clave = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Clave"]!);

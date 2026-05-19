@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="DTOs\Citas\" />
-    <Folder Include="DTOs\Inventario\" />
     <Folder Include="Mapeos\" />
   </ItemGroup>
 

@@ -3,24 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MediTrack.Dominio.Comun;
-using MediTrack.Dominio.Enumeraciones;
 
-namespace MediTrack.Dominio.Entidades
+namespace MediTrack.Aplicacion.DTOs.Citas
 {
-    public class Cita : EntidadBase
+    public class DtoCita
     {
+        public int Id { get; set; }
         public DateTime FechaHora { get; set; }
         public string Motivo { get; set; } = string.Empty;
         public string? Observaciones { get; set; }
-        public EstadoCita Estado {  get; set; } = EstadoCita.Pendiente;
+        public string Estado { get; set; } = string.Empty;
 
-        //Relaciones
+        // Datos del paciente
         public int PacienteId { get; set; }
-        public Usuario Paciente { get; set; } = null!;
+        public string NombrePaciente { get; set; } = string.Empty;
 
+        // Datos del doctor
         public int DoctorId { get; set; }
-        public Usuario Doctor { get; set; } = null!;
-
+        public string NombreDoctor { get; set; } = string.Empty;
     }
 }

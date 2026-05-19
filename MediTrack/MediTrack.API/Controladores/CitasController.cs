@@ -1,0 +1,139 @@
+﻿using MediTrack.Aplicacion.DTOs.Citas;
+using MediTrack.Aplicacion.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace MediTrack.API.Controladores
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
+    public class CitasController : ControllerBase
+    {
+        private readonly IServicioCitas _servicio;
+
+        public CitasController(IServicioCitas servicio)
+        {
+            _servicio = servicio;
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrador,Recepcionista,Doctor")]
+        public async Task<IActionResult> ObtenerTodas()
+        {
+            var resultado = await _servicio.ObtenerTodas();
+            return Ok(resultado);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ObtenerPorId(int id)
+        {
+            try
+            {
+                var resultado = await _servicio.ObtenerPorId(id);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { mensaje = ex.Message });
+            }
+        }
+
+        [HttpGet("paciente/{pacienteId}")]
+        public async Task<IActionResult> ObtenerPorPaciente(int pacienteId)
+        {
+            try
+            {
+                var resultado = await _servicio.ObtenerPorPaciente(pacienteId);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { mensaje = ex.Message });
+            }
+        }
+
+        [HttpGet("doctor/{doctorId}")]
+        [Authorize(Roles = "Administrador,Recepcionista,Doctor")]
+        public async Task<IActionResult> ObtenerPorDoctor(int doctorId)
+        {
+            try
+            {
+                var resultado = await _servicio.ObtenerPorDoctor(doctorId);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { mensaje = ex.Message });
+            }
+        }
+
+        [HttpGet("fecha/{fecha}")]
+        [Authorize(Roles = "Administrador,Recepcionista,Doctor")]
+        public async Task<IActionResult> ObtenerPorFecha(DateTime fecha)
+        {
+            var resultado = await _servicio.ObtenerPorFecha(fecha);
+            return Ok(resultado);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrador,Recepcionista")]
+        public async Task<IActionResult> Crear([FromBody] DtoCrearCita dto)
+        {
+            try
+            {
+                var resultado = await _servicio.Crear(dto);
+                return CreatedAtAction(nameof(ObtenerPorId), new { id = resultado.Id }, resultado);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Administrador,Recepcionista")]
+        public async Task<IActionResult> Actualizar(int id, [FromBody] DtoActualizarCita dto)
+        {
+            try
+            {
+                var resultado = await _servicio.Actualizar(id, dto);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
+
+        [HttpPatch("{id}/estado")]
+        [Authorize(Roles = "Administrador,Recepcionista,Doctor")]
+        public async Task<IActionResult> CambiarEstado(int id, [FromBody] DtoCambiarEstadoCita dto)
+        {
+            try
+            {
+                var resultado = await _servicio.CambiarEstado(id, dto);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
+
+        [HttpPatch("{id}/cancelar")]
+        public async Task<IActionResult> Cancelar(int id)
+        {
+            try
+            {
+                await _servicio.Cancelar(id);
+                return Ok(new { mensaje = "Cita cancelada correctamente." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
+    }
+}

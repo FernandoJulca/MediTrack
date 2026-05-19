@@ -16,13 +16,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controladores\" />
     <Folder Include="Middlewares\" />
     <Folder Include="Extensiones\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MediTrack.Aplicacion\MediTrack.Aplicacion.csproj" />
+    <ProjectReference Include="..\MediTrack.Dominio\MediTrack.Dominio.csproj" />
     <ProjectReference Include="..\MediTrack.Infraestructura\MediTrack.Infraestructura.csproj" />
   </ItemGroup>
 

@@ -7,16 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\Autenticacion\" />
     <Folder Include="DTOs\Citas\" />
     <Folder Include="DTOs\Inventario\" />
-    <Folder Include="Interfaces\" />
     <Folder Include="Mapeos\" />
-    <Folder Include="Servicios\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MediTrack.Dominio\MediTrack.Dominio.csproj" />
+    <ProjectReference Include="..\MediTrack.Infraestructura\MediTrack.Infraestructura.csproj" />
   </ItemGroup>
 
 </Project>

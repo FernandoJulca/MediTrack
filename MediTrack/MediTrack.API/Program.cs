@@ -17,6 +17,7 @@ builder.Services.AddDbContext<ContextoAplicacion>(opciones =>
 builder.Services.AddScoped<IServicioAutenticacion, ServicioAutenticacion>();
 builder.Services.AddScoped<IServicioInventario, ServicioInventario>();
 builder.Services.AddScoped<IServicioCitas, ServicioCitas>();
+builder.Services.AddScoped<IServicioVentas, ServicioVentas>();
 
 // JWT
 var clave = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Clave"]!);
@@ -98,5 +99,16 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Ejecutar seeder al iniciar la aplicación
+using (var scope = app.Services.CreateScope())
+{
+    var contexto = scope.ServiceProvider.GetRequiredService<ContextoAplicacion>();
+    await contexto.Database.MigrateAsync(); // Crea la BD si no existe
+    await SeederDatos.EjecutarAsync(contexto);
+}
+
+app.Run();
+
 
 app.Run();

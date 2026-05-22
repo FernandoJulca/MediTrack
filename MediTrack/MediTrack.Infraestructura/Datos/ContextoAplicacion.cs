@@ -15,9 +15,11 @@ namespace MediTrack.Infraestructura.Datos
 
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Cita> Citas { get; set; }
-        public DbSet<Medicamento> Medicamentos { get; set; }
-        public DbSet<Venta> Ventas { get; set; }
-        public DbSet<DetalleVenta> DetallesVenta { get; set; }
+        public DbSet<Sede> Sedes { get; set; }
+        public DbSet<Especialidad> Especialidades { get; set; }
+        public DbSet<HorarioDoctor> HorariosDoctores { get; set; }
+        public DbSet<InformeMedico> InformesMedicos { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -8,9 +8,12 @@ namespace MediTrack.Dominio.Enumeraciones
 {
     public enum EstadoCita
     {
-        Pendiente = 1,
+        Agendada = 1,
         Confirmada = 2,
-        Cancelada = 3,
-        Completada = 4
+        Llego = 3,
+        EnAtencion = 4,
+        Completada = 5,
+        NoSePresento = 6,
+        Cancelada = 7
     }
 }

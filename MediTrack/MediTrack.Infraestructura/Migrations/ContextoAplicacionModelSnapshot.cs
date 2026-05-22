@@ -36,6 +36,9 @@ namespace MediTrack.Infraestructura.Migrations
                     b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
+                    b.Property<int>("EspecialidadId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Estado")
                         .HasColumnType("int");
 
@@ -60,57 +63,23 @@ namespace MediTrack.Infraestructura.Migrations
                     b.Property<int>("PacienteId")
                         .HasColumnType("int");
 
+                    b.Property<int>("SedeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DoctorId");
 
+                    b.HasIndex("EspecialidadId");
+
                     b.HasIndex("PacienteId");
+
+                    b.HasIndex("SedeId");
 
                     b.ToTable("Citas", (string)null);
                 });
 
-            modelBuilder.Entity("MediTrack.Dominio.Entidades.DetalleVenta", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Activo")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Cantidad")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("FechaModificacion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("MedicamentoId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("PrecioUnitario")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<decimal>("Subtotal")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<int>("VentaId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MedicamentoId");
-
-                    b.HasIndex("VentaId");
-
-                    b.ToTable("DetallesVenta", (string)null);
-                });
-
-            modelBuilder.Entity("MediTrack.Dominio.Entidades.Medicamento", b =>
+            modelBuilder.Entity("MediTrack.Dominio.Entidades.Especialidad", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -132,39 +101,165 @@ namespace MediTrack.Infraestructura.Migrations
                     b.Property<DateTime?>("FechaModificacion")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("FechaVencimiento")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Icono")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Laboratorio")
+                    b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Especialidades", (string)null);
+                });
+
+            modelBuilder.Entity("MediTrack.Dominio.Entidades.HorarioDoctor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("DiaSemana")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DuracionCitaMinutos")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaModificacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeOnly>("HoraFin")
+                        .HasColumnType("time");
+
+                    b.Property<TimeOnly>("HoraInicio")
+                        .HasColumnType("time");
+
+                    b.Property<int>("SedeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("SedeId");
+
+                    b.ToTable("HorariosDoctores", (string)null);
+                });
+
+            modelBuilder.Entity("MediTrack.Dominio.Entidades.InformeMedico", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("CitaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Diagnostico")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaInforme")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaModificacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Observaciones")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Receta")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("Sintomas")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Tratamiento")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CitaId")
+                        .IsUnique();
+
+                    b.ToTable("InformesMedicos", (string)null);
+                });
+
+            modelBuilder.Entity("MediTrack.Dominio.Entidades.Sede", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Ciudad")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Descripcion")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Direccion")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaModificacion")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<decimal>("PrecioCompra")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<decimal>("PrecioVenta")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<int>("StockActual")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StockMinimo")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UnidadMedida")
+                    b.Property<string>("Telefono")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("UrlFoto")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Medicamentos", (string)null);
+                    b.ToTable("Sedes", (string)null);
                 });
 
             modelBuilder.Entity("MediTrack.Dominio.Entidades.Usuario", b =>
@@ -183,6 +278,9 @@ namespace MediTrack.Infraestructura.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("Biografia")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ContrasenaHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -196,6 +294,9 @@ namespace MediTrack.Infraestructura.Migrations
                         .IsRequired()
                         .HasMaxLength(8)
                         .HasColumnType("nvarchar(8)");
+
+                    b.Property<int?>("EspecialidadId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("datetime2");
@@ -216,6 +317,9 @@ namespace MediTrack.Infraestructura.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
+                    b.Property<string>("UrlFoto")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Correo")
@@ -224,117 +328,112 @@ namespace MediTrack.Infraestructura.Migrations
                     b.HasIndex("Dni")
                         .IsUnique();
 
+                    b.HasIndex("EspecialidadId");
+
                     b.ToTable("Usuarios", (string)null);
-                });
-
-            modelBuilder.Entity("MediTrack.Dominio.Entidades.Venta", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Activo")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("FechaCreacion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("FechaModificacion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("FechaVenta")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("NumeroComprobante")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<int>("PacienteId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TipoComprobante")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NumeroComprobante")
-                        .IsUnique();
-
-                    b.HasIndex("PacienteId");
-
-                    b.ToTable("Ventas", (string)null);
                 });
 
             modelBuilder.Entity("MediTrack.Dominio.Entidades.Cita", b =>
                 {
                     b.HasOne("MediTrack.Dominio.Entidades.Usuario", "Doctor")
-                        .WithMany()
+                        .WithMany("CitasDoctor")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("MediTrack.Dominio.Entidades.Usuario", "Paciente")
+                    b.HasOne("MediTrack.Dominio.Entidades.Especialidad", "Especialidad")
                         .WithMany("Citas")
+                        .HasForeignKey("EspecialidadId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MediTrack.Dominio.Entidades.Usuario", "Paciente")
+                        .WithMany("CitasPaciente")
                         .HasForeignKey("PacienteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MediTrack.Dominio.Entidades.Sede", "Sede")
+                        .WithMany("Citas")
+                        .HasForeignKey("SedeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Doctor");
 
+                    b.Navigation("Especialidad");
+
                     b.Navigation("Paciente");
+
+                    b.Navigation("Sede");
                 });
 
-            modelBuilder.Entity("MediTrack.Dominio.Entidades.DetalleVenta", b =>
+            modelBuilder.Entity("MediTrack.Dominio.Entidades.HorarioDoctor", b =>
                 {
-                    b.HasOne("MediTrack.Dominio.Entidades.Medicamento", "Medicamento")
-                        .WithMany("DetallesVenta")
-                        .HasForeignKey("MedicamentoId")
+                    b.HasOne("MediTrack.Dominio.Entidades.Usuario", "Doctor")
+                        .WithMany("Horarios")
+                        .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("MediTrack.Dominio.Entidades.Venta", "Venta")
-                        .WithMany("Detalles")
-                        .HasForeignKey("VentaId")
+                    b.HasOne("MediTrack.Dominio.Entidades.Sede", "Sede")
+                        .WithMany("Horarios")
+                        .HasForeignKey("SedeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Sede");
+                });
+
+            modelBuilder.Entity("MediTrack.Dominio.Entidades.InformeMedico", b =>
+                {
+                    b.HasOne("MediTrack.Dominio.Entidades.Cita", "Cita")
+                        .WithOne("InformeMedico")
+                        .HasForeignKey("MediTrack.Dominio.Entidades.InformeMedico", "CitaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Medicamento");
-
-                    b.Navigation("Venta");
-                });
-
-            modelBuilder.Entity("MediTrack.Dominio.Entidades.Venta", b =>
-                {
-                    b.HasOne("MediTrack.Dominio.Entidades.Usuario", "Paciente")
-                        .WithMany()
-                        .HasForeignKey("PacienteId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Paciente");
-                });
-
-            modelBuilder.Entity("MediTrack.Dominio.Entidades.Medicamento", b =>
-                {
-                    b.Navigation("DetallesVenta");
+                    b.Navigation("Cita");
                 });
 
             modelBuilder.Entity("MediTrack.Dominio.Entidades.Usuario", b =>
                 {
-                    b.Navigation("Citas");
+                    b.HasOne("MediTrack.Dominio.Entidades.Especialidad", "Especialidad")
+                        .WithMany("Doctores")
+                        .HasForeignKey("EspecialidadId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Especialidad");
                 });
 
-            modelBuilder.Entity("MediTrack.Dominio.Entidades.Venta", b =>
+            modelBuilder.Entity("MediTrack.Dominio.Entidades.Cita", b =>
                 {
-                    b.Navigation("Detalles");
+                    b.Navigation("InformeMedico");
+                });
+
+            modelBuilder.Entity("MediTrack.Dominio.Entidades.Especialidad", b =>
+                {
+                    b.Navigation("Citas");
+
+                    b.Navigation("Doctores");
+                });
+
+            modelBuilder.Entity("MediTrack.Dominio.Entidades.Sede", b =>
+                {
+                    b.Navigation("Citas");
+
+                    b.Navigation("Horarios");
+                });
+
+            modelBuilder.Entity("MediTrack.Dominio.Entidades.Usuario", b =>
+                {
+                    b.Navigation("CitasDoctor");
+
+                    b.Navigation("CitasPaciente");
+
+                    b.Navigation("Horarios");
                 });
 #pragma warning restore 612, 618
         }

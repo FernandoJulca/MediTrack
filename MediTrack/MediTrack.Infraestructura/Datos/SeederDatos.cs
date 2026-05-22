@@ -96,128 +96,7 @@ namespace MediTrack.Infraestructura.Datos
             await contexto.Usuarios.AddRangeAsync(usuarios);
             await contexto.SaveChangesAsync();
 
-            // ── Medicamentos ──────────────────────────────────────
-            if (!contexto.Medicamentos.Any())
-            {
-                var medicamentos = new List<Medicamento>
-                {
-                    new Medicamento
-                    {
-                        Nombre = "Paracetamol 500mg",
-                        Descripcion = "Analgésico y antipirético",
-                        Laboratorio = "Laboratorio Bayer",
-                        UnidadMedida = "Tableta",
-                        StockActual = 100,
-                        StockMinimo = 20,
-                        PrecioCompra = 0.15m,
-                        PrecioVenta = 0.50m,
-                        FechaVencimiento = new DateTime(2026, 12, 31),
-                        FechaCreacion = DateTime.UtcNow,
-                        Activo = true
-                    },
-                    new Medicamento
-                    {
-                        Nombre = "Ibuprofeno 400mg",
-                        Descripcion = "Antiinflamatorio no esteroideo",
-                        Laboratorio = "Laboratorio Genfar",
-                        UnidadMedida = "Tableta",
-                        StockActual = 80,
-                        StockMinimo = 15,
-                        PrecioCompra = 0.20m,
-                        PrecioVenta = 0.70m,
-                        FechaVencimiento = new DateTime(2026, 10, 31),
-                        FechaCreacion = DateTime.UtcNow,
-                        Activo = true
-                    },
-                    new Medicamento
-                    {
-                        Nombre = "Amoxicilina 500mg",
-                        Descripcion = "Antibiótico de amplio espectro",
-                        Laboratorio = "Laboratorio MK",
-                        UnidadMedida = "Cápsula",
-                        StockActual = 50,
-                        StockMinimo = 10,
-                        PrecioCompra = 0.80m,
-                        PrecioVenta = 2.50m,
-                        FechaVencimiento = new DateTime(2025, 8, 31),
-                        FechaCreacion = DateTime.UtcNow,
-                        Activo = true
-                    },
-                    new Medicamento
-                    {
-                        Nombre = "Omeprazol 20mg",
-                        Descripcion = "Inhibidor de bomba de protones",
-                        Laboratorio = "Laboratorio Bayer",
-                        UnidadMedida = "Cápsula",
-                        StockActual = 60,
-                        StockMinimo = 10,
-                        PrecioCompra = 0.30m,
-                        PrecioVenta = 1.00m,
-                        FechaVencimiento = new DateTime(2026, 6, 30),
-                        FechaCreacion = DateTime.UtcNow,
-                        Activo = true
-                    },
-                    new Medicamento
-                    {
-                        Nombre = "Loratadina 10mg",
-                        Descripcion = "Antihistamínico",
-                        Laboratorio = "Laboratorio Genfar",
-                        UnidadMedida = "Tableta",
-                        StockActual = 40,
-                        StockMinimo = 10,
-                        PrecioCompra = 0.25m,
-                        PrecioVenta = 0.80m,
-                        FechaVencimiento = new DateTime(2026, 9, 30),
-                        FechaCreacion = DateTime.UtcNow,
-                        Activo = true
-                    },
-                    new Medicamento
-                    {
-                        Nombre = "Metformina 850mg",
-                        Descripcion = "Antidiabético oral",
-                        Laboratorio = "Laboratorio MK",
-                        UnidadMedida = "Tableta",
-                        StockActual = 15,
-                        StockMinimo = 20,
-                        PrecioCompra = 0.40m,
-                        PrecioVenta = 1.20m,
-                        FechaVencimiento = new DateTime(2026, 3, 31),
-                        FechaCreacion = DateTime.UtcNow,
-                        Activo = true
-                    },
-                    new Medicamento
-                    {
-                        Nombre = "Enalapril 10mg",
-                        Descripcion = "Antihipertensivo",
-                        Laboratorio = "Laboratorio Bayer",
-                        UnidadMedida = "Tableta",
-                        StockActual = 70,
-                        StockMinimo = 15,
-                        PrecioCompra = 0.35m,
-                        PrecioVenta = 1.10m,
-                        FechaVencimiento = new DateTime(2026, 11, 30),
-                        FechaCreacion = DateTime.UtcNow,
-                        Activo = true
-                    },
-                    new Medicamento
-                    {
-                        Nombre = "Azitromicina 500mg",
-                        Descripcion = "Antibiótico macrólido",
-                        Laboratorio = "Laboratorio Genfar",
-                        UnidadMedida = "Tableta",
-                        StockActual = 8,
-                        StockMinimo = 15,
-                        PrecioCompra = 1.50m,
-                        PrecioVenta = 4.00m,
-                        FechaVencimiento = new DateTime(2025, 7, 31),
-                        FechaCreacion = DateTime.UtcNow,
-                        Activo = true
-                    }
-                };
-
-                await contexto.Medicamentos.AddRangeAsync(medicamentos);
-                await contexto.SaveChangesAsync();
-            }
+            
 
             // ── Citas ─────────────────────────────────────────────
             if (!contexto.Citas.Any())
@@ -233,7 +112,7 @@ namespace MediTrack.Infraestructura.Datos
                     {
                         FechaHora = DateTime.UtcNow.AddDays(1).Date.AddHours(9),
                         Motivo = "Control general",
-                        Estado = EstadoCita.Pendiente,
+                        Estado = EstadoCita.Agendada,
                         PacienteId = paciente1Id,
                         DoctorId = doctor1Id,
                         FechaCreacion = DateTime.UtcNow,
@@ -253,7 +132,7 @@ namespace MediTrack.Infraestructura.Datos
                     {
                         FechaHora = DateTime.UtcNow.AddDays(2).Date.AddHours(8),
                         Motivo = "Revisión de presión arterial",
-                        Estado = EstadoCita.Pendiente,
+                        Estado = EstadoCita.Agendada,
                         PacienteId = paciente1Id,
                         DoctorId = doctor2Id,
                         FechaCreacion = DateTime.UtcNow,

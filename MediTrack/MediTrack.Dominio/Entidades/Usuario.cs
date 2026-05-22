@@ -16,10 +16,19 @@ namespace MediTrack.Dominio.Entidades
         public string ContrasenaHash { get; set; } = string.Empty;
         public string Telefono { get; set; } = string.Empty;
         public string Dni { get; set; } = string.Empty;
-        public RolUsuario Rol {  get; set; }
+        public string? UrlFoto { get; set; }
+        public string? Biografia { get; set; }  // Para doctores
+        public RolUsuario Rol { get; set; }
 
-        //Navegacion
-        public ICollection<Cita> Citas { get; set; } = new List<Cita>();
+        // Solo para doctores
+        public int? EspecialidadId { get; set; }
+        public Especialidad? Especialidad { get; set; }
+
+        // Navegación
+        public ICollection<Cita> CitasPaciente { get; set; } = new List<Cita>();
+        public ICollection<Cita> CitasDoctor { get; set; } = new List<Cita>();
+        public ICollection<HorarioDoctor> Horarios { get; set; } = new List<HorarioDoctor>();
+
     }
 
 }

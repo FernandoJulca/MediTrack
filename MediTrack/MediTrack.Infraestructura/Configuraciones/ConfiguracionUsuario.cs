@@ -37,6 +37,10 @@ namespace MediTrack.Infraestructura.Configuraciones
                 .IsUnique();
             constructor.Property(u => u.Rol)
                 .IsRequired();
+            constructor.HasOne(u => u.Especialidad)
+                .WithMany(e => e.Doctores)
+                .HasForeignKey(u => u.EspecialidadId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

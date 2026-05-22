@@ -15,23 +15,29 @@ namespace MediTrack.Infraestructura.Configuraciones
         {
             constructor.ToTable("Citas");
             constructor.HasKey(c => c.Id);
-            constructor.Property(c => c.Motivo)
-                .IsRequired()
-                .HasMaxLength(250);
-            constructor.Property(c => c.Observaciones)
-                .HasMaxLength(500);
-            constructor.Property(c => c.Estado)
-                .IsRequired();
 
-            //Relacion Cita -> Paciente
+            constructor.Property(c => c.Motivo).IsRequired().HasMaxLength(250);
+            constructor.Property(c => c.Observaciones).HasMaxLength(500);
+            constructor.Property(c => c.Estado).IsRequired();
+
             constructor.HasOne(c => c.Paciente)
-                .WithMany(u => u.Citas)
+                .WithMany(u => u.CitasPaciente)
                 .HasForeignKey(c => c.PacienteId)
                 .OnDelete(DeleteBehavior.Restrict);
-            //Relacion Cita -> Doctor (sin navegacion inversa para evitar ciclo)
+
             constructor.HasOne(c => c.Doctor)
-                .WithMany()
+                .WithMany(u => u.CitasDoctor)
                 .HasForeignKey(c => c.DoctorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            constructor.HasOne(c => c.Sede)
+                .WithMany(s => s.Citas)
+                .HasForeignKey(c => c.SedeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            constructor.HasOne(c => c.Especialidad)
+                .WithMany(e => e.Citas)
+                .HasForeignKey(c => c.EspecialidadId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

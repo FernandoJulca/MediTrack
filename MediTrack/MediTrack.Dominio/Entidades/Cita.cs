@@ -13,14 +13,23 @@ namespace MediTrack.Dominio.Entidades
         public DateTime FechaHora { get; set; }
         public string Motivo { get; set; } = string.Empty;
         public string? Observaciones { get; set; }
-        public EstadoCita Estado {  get; set; } = EstadoCita.Pendiente;
+        public EstadoCita Estado { get; set; } = EstadoCita.Agendada;
 
-        //Relaciones
+        // Relaciones
         public int PacienteId { get; set; }
         public Usuario Paciente { get; set; } = null!;
 
         public int DoctorId { get; set; }
         public Usuario Doctor { get; set; } = null!;
+
+        public int SedeId { get; set; }
+        public Sede Sede { get; set; } = null!;
+
+        public int EspecialidadId { get; set; }
+        public Especialidad Especialidad { get; set; } = null!;
+
+        // Informe médico (se llena al finalizar)
+        public InformeMedico? InformeMedico { get; set; }
 
     }
 }

@@ -128,7 +128,7 @@ namespace MediTrack.Aplicacion.Servicios
                 Motivo = dto.Motivo,
                 PacienteId = dto.PacienteId,
                 DoctorId = dto.DoctorId,
-                Estado = EstadoCita.Pendiente
+                Estado = EstadoCita.Agendada
             };
 
             _contexto.Citas.Add(cita);

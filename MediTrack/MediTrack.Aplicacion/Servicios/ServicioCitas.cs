@@ -25,7 +25,10 @@ namespace MediTrack.Aplicacion.Servicios
         {
             var citas = await _contexto.Citas
                 .Include(c => c.Paciente)
-                .Include(c => c.Doctor)
+                .Include(c => c.Doctor).ThenInclude(d => d.Especialidad)
+                .Include(c => c.Sede)
+                .Include(c => c.Especialidad)
+                .Include(c => c.InformeMedico)
                 .Where(c => c.Activo)
                 .OrderByDescending(c => c.FechaHora)
                 .ToListAsync();
@@ -37,7 +40,10 @@ namespace MediTrack.Aplicacion.Servicios
         {
             var cita = await _contexto.Citas
                 .Include(c => c.Paciente)
-                .Include(c => c.Doctor)
+                .Include(c => c.Doctor).ThenInclude(d => d.Especialidad)
+                .Include(c => c.Sede)
+                .Include(c => c.Especialidad)
+                .Include(c => c.InformeMedico)
                 .FirstOrDefaultAsync(c => c.Id == id && c.Activo);
 
             if (cita == null)
@@ -48,15 +54,12 @@ namespace MediTrack.Aplicacion.Servicios
 
         public async Task<List<DtoCita>> ObtenerPorPaciente(int pacienteId)
         {
-            var existePaciente = await _contexto.Usuarios
-                .AnyAsync(u => u.Id == pacienteId && u.Activo);
-
-            if (!existePaciente)
-                throw new Exception("Paciente no encontrado.");
-
             var citas = await _contexto.Citas
                 .Include(c => c.Paciente)
-                .Include(c => c.Doctor)
+                .Include(c => c.Doctor).ThenInclude(d => d.Especialidad)
+                .Include(c => c.Sede)
+                .Include(c => c.Especialidad)
+                .Include(c => c.InformeMedico)
                 .Where(c => c.PacienteId == pacienteId && c.Activo)
                 .OrderByDescending(c => c.FechaHora)
                 .ToListAsync();
@@ -66,15 +69,12 @@ namespace MediTrack.Aplicacion.Servicios
 
         public async Task<List<DtoCita>> ObtenerPorDoctor(int doctorId)
         {
-            var existeDoctor = await _contexto.Usuarios
-                .AnyAsync(u => u.Id == doctorId && u.Activo);
-
-            if (!existeDoctor)
-                throw new Exception("Doctor no encontrado.");
-
             var citas = await _contexto.Citas
                 .Include(c => c.Paciente)
-                .Include(c => c.Doctor)
+                .Include(c => c.Doctor).ThenInclude(d => d.Especialidad)
+                .Include(c => c.Sede)
+                .Include(c => c.Especialidad)
+                .Include(c => c.InformeMedico)
                 .Where(c => c.DoctorId == doctorId && c.Activo)
                 .OrderByDescending(c => c.FechaHora)
                 .ToListAsync();
@@ -82,13 +82,15 @@ namespace MediTrack.Aplicacion.Servicios
             return citas.Select(c => MapearDto(c)).ToList();
         }
 
-        public async Task<List<DtoCita>> ObtenerPorFecha(DateTime fecha)
+        public async Task<List<DtoCita>> ObtenerPorFechaYSede(DateTime fecha, int sedeId)
         {
             var citas = await _contexto.Citas
                 .Include(c => c.Paciente)
-                .Include(c => c.Doctor)
-                .Where(c => c.Activo &&
-                            c.FechaHora.Date == fecha.Date)
+                .Include(c => c.Doctor).ThenInclude(d => d.Especialidad)
+                .Include(c => c.Sede)
+                .Include(c => c.Especialidad)
+                .Include(c => c.InformeMedico)
+                .Where(c => c.Activo && c.SedeId == sedeId && c.FechaHora.Date == fecha.Date)
                 .OrderBy(c => c.FechaHora)
                 .ToListAsync();
 
@@ -97,28 +99,26 @@ namespace MediTrack.Aplicacion.Servicios
 
         public async Task<DtoCita> Crear(DtoCrearCita dto)
         {
-            // Verificar que el paciente existe
             var paciente = await _contexto.Usuarios
                 .FirstOrDefaultAsync(u => u.Id == dto.PacienteId && u.Activo);
-
             if (paciente == null)
                 throw new Exception("Paciente no encontrado.");
 
-            // Verificar que el doctor existe
             var doctor = await _contexto.Usuarios
-                .FirstOrDefaultAsync(u => u.Id == dto.DoctorId
-                    && u.Rol == RolUsuario.Doctor && u.Activo);
-
+                .FirstOrDefaultAsync(u => u.Id == dto.DoctorId && u.Rol == RolUsuario.Doctor && u.Activo);
             if (doctor == null)
                 throw new Exception("Doctor no encontrado.");
 
-            // Verificar que el doctor no tenga otra cita en ese horario
+            var sede = await _contexto.Sedes
+                .FirstOrDefaultAsync(s => s.Id == dto.SedeId && s.Activo);
+            if (sede == null)
+                throw new Exception("Sede no encontrada.");
+
             var existeConflicto = await _contexto.Citas
                 .AnyAsync(c => c.DoctorId == dto.DoctorId
                     && c.FechaHora == dto.FechaHora
                     && c.Estado != EstadoCita.Cancelada
                     && c.Activo);
-
             if (existeConflicto)
                 throw new Exception("El doctor ya tiene una cita en ese horario.");
 
@@ -128,24 +128,20 @@ namespace MediTrack.Aplicacion.Servicios
                 Motivo = dto.Motivo,
                 PacienteId = dto.PacienteId,
                 DoctorId = dto.DoctorId,
+                SedeId = dto.SedeId,
+                EspecialidadId = dto.EspecialidadId,
                 Estado = EstadoCita.Agendada
             };
 
             _contexto.Citas.Add(cita);
             await _contexto.SaveChangesAsync();
 
-            // Recargar con los datos de navegación
-            await _contexto.Entry(cita).Reference(c => c.Paciente).LoadAsync();
-            await _contexto.Entry(cita).Reference(c => c.Doctor).LoadAsync();
-
-            return MapearDto(cita);
+            return await ObtenerPorId(cita.Id);
         }
 
-        public async Task<DtoCita> Actualizar(int id, DtoActualizarCita dto)
+        public async Task<DtoCita> CambiarEstado(int id, DtoCambiarEstadoCita dto)
         {
             var cita = await _contexto.Citas
-                .Include(c => c.Paciente)
-                .Include(c => c.Doctor)
                 .FirstOrDefaultAsync(c => c.Id == id && c.Activo);
 
             if (cita == null)
@@ -154,36 +150,45 @@ namespace MediTrack.Aplicacion.Servicios
             if (cita.Estado == EstadoCita.Cancelada || cita.Estado == EstadoCita.Completada)
                 throw new Exception("No se puede modificar una cita cancelada o completada.");
 
-            cita.FechaHora = dto.FechaHora;
-            cita.Motivo = dto.Motivo;
-            cita.Observaciones = dto.Observaciones;
-            cita.FechaModificacion = DateTime.UtcNow;
-
-            await _contexto.SaveChangesAsync();
-
-            return MapearDto(cita);
-        }
-
-        public async Task<DtoCita> CambiarEstado(int id, DtoCambiarEstadoCita dto)
-        {
-            var cita = await _contexto.Citas
-                .Include(c => c.Paciente)
-                .Include(c => c.Doctor)
-                .FirstOrDefaultAsync(c => c.Id == id && c.Activo);
-
-            if (cita == null)
-                throw new Exception("Cita no encontrada.");
-
-            if (cita.Estado == EstadoCita.Cancelada || cita.Estado == EstadoCita.Completada)
-                throw new Exception("No se puede cambiar el estado de una cita cancelada o completada.");
-
             cita.Estado = (EstadoCita)dto.Estado;
             cita.Observaciones = dto.Observaciones;
             cita.FechaModificacion = DateTime.UtcNow;
 
             await _contexto.SaveChangesAsync();
 
-            return MapearDto(cita);
+            return await ObtenerPorId(cita.Id);
+        }
+
+        public async Task<DtoCita> CrearInformeMedico(DtoCrearInformeMedico dto)
+        {
+            var cita = await _contexto.Citas
+                .FirstOrDefaultAsync(c => c.Id == dto.CitaId && c.Activo);
+
+            if (cita == null)
+                throw new Exception("Cita no encontrada.");
+
+            if (cita.Estado != EstadoCita.EnAtencion)
+                throw new Exception("Solo se puede crear el informe de una cita en atención.");
+
+            var informe = new InformeMedico
+            {
+                CitaId = dto.CitaId,
+                Sintomas = dto.Sintomas,
+                Diagnostico = dto.Diagnostico,
+                Tratamiento = dto.Tratamiento,
+                Observaciones = dto.Observaciones,
+                Receta = dto.Receta,
+                FechaInforme = DateTime.UtcNow
+            };
+
+            _contexto.InformesMedicos.Add(informe);
+
+            cita.Estado = EstadoCita.Completada;
+            cita.FechaModificacion = DateTime.UtcNow;
+
+            await _contexto.SaveChangesAsync();
+
+            return await ObtenerPorId(cita.Id);
         }
 
         public async Task Cancelar(int id)
@@ -194,8 +199,8 @@ namespace MediTrack.Aplicacion.Servicios
             if (cita == null)
                 throw new Exception("Cita no encontrada.");
 
-            if (cita.Estado == EstadoCita.Completada)
-                throw new Exception("No se puede cancelar una cita ya completada.");
+            if (cita.Estado == EstadoCita.Completada || cita.Estado == EstadoCita.EnAtencion)
+                throw new Exception("No se puede cancelar una cita en atención o completada.");
 
             cita.Estado = EstadoCita.Cancelada;
             cita.FechaModificacion = DateTime.UtcNow;
@@ -215,7 +220,21 @@ namespace MediTrack.Aplicacion.Servicios
                 PacienteId = c.PacienteId,
                 NombrePaciente = $"{c.Paciente.Nombres} {c.Paciente.Apellidos}",
                 DoctorId = c.DoctorId,
-                NombreDoctor = $"{c.Doctor.Nombres} {c.Doctor.Apellidos}"
+                NombreDoctor = $"{c.Doctor.Nombres} {c.Doctor.Apellidos}",
+                SedeId = c.SedeId,
+                NombreSede = c.Sede.Nombre,
+                EspecialidadId = c.EspecialidadId,
+                NombreEspecialidad = c.Especialidad.Nombre,
+                InformeMedico = c.InformeMedico == null ? null : new DtoInformeMedico
+                {
+                    Id = c.InformeMedico.Id,
+                    Sintomas = c.InformeMedico.Sintomas,
+                    Diagnostico = c.InformeMedico.Diagnostico,
+                    Tratamiento = c.InformeMedico.Tratamiento,
+                    Observaciones = c.InformeMedico.Observaciones,
+                    Receta = c.InformeMedico.Receta,
+                    FechaInforme = c.InformeMedico.FechaInforme
+                }
             };
         }
     }

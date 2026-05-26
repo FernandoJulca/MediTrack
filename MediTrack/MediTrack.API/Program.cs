@@ -16,6 +16,9 @@ builder.Services.AddDbContext<ContextoAplicacion>(opciones =>
 // Servicios
 builder.Services.AddScoped<IServicioAutenticacion, ServicioAutenticacion>();
 builder.Services.AddScoped<IServicioCitas, ServicioCitas>();
+builder.Services.AddScoped<IServicioSedes, ServicioSedes>();
+builder.Services.AddScoped<IServicioEspecialidades, ServicioEspecialidades>();
+builder.Services.AddScoped<IServicioDoctores, ServicioDoctores>();
 
 // JWT
 var clave = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Clave"]!);
@@ -107,6 +110,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("PermitirAngular");
+app.UseAuthentication();
 
 app.UseAuthorization();
 
@@ -119,8 +123,5 @@ using (var scope = app.Services.CreateScope())
     await contexto.Database.MigrateAsync(); // Crea la BD si no existe
     await SeederDatos.EjecutarAsync(contexto);
 }
-
-app.Run();
-
 
 app.Run();

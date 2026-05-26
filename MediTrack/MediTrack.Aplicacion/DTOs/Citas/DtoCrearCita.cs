@@ -12,5 +12,7 @@ namespace MediTrack.Aplicacion.DTOs.Citas
         public string Motivo { get; set; } = string.Empty;
         public int PacienteId { get; set; }
         public int DoctorId { get; set; }
+        public int SedeId { get; set; }
+        public int EspecialidadId { get; set; }
     }
 }

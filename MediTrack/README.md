@@ -31,12 +31,12 @@ Sistema de Gestión Clínica e Inventario Médico desarrollado en ASP.NET Core.
 ## Usuarios de prueba
 | Rol | Correo | Contraseña |
 |---|---|---|
-| Administrador | admin@meditrack.com | 123 |
-| Recepcionista | recepcion@meditrack.com | 123 |
-| Doctor | doctor1@meditrack.com | 123 |
-| Doctor | doctor2@meditrack.com | 123 |
-| Paciente | paciente1@meditrack.com | 123 |
-| Paciente | paciente2@meditrack.com | 123 |
+| Administrador | admin@meditrack.com | Admin123! |
+| Recepcionista | recepcion@meditrack.com | Admin123! |
+| Doctor | doctor1@meditrack.com | Admin123! |
+| Doctor | doctor2@meditrack.com | Admin123! |
+| Paciente | paciente1@meditrack.com | Admin123! |
+| Paciente | paciente2@meditrack.com | Admin123! |
 
 ## Endpoints principales
 - POST /api/Autenticacion/registrar

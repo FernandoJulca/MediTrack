@@ -13,10 +13,10 @@ namespace MediTrack.Aplicacion.Interfaces
         Task<DtoCita> ObtenerPorId(int id);
         Task<List<DtoCita>> ObtenerPorPaciente(int pacienteId);
         Task<List<DtoCita>> ObtenerPorDoctor(int doctorId);
-        Task<List<DtoCita>> ObtenerPorFecha(DateTime fecha);
+        Task<List<DtoCita>> ObtenerPorFechaYSede(DateTime fecha, int sedeId);
         Task<DtoCita> Crear(DtoCrearCita dto);
-        Task<DtoCita> Actualizar(int id, DtoActualizarCita dto);
         Task<DtoCita> CambiarEstado(int id, DtoCambiarEstadoCita dto);
+        Task<DtoCita> CrearInformeMedico(DtoCrearInformeMedico dto);
         Task Cancelar(int id);
     }
 }

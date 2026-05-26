@@ -27,6 +27,7 @@ namespace MediTrack.API.Controladores
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> ObtenerPorId(int id)
         {
             try
@@ -41,65 +42,37 @@ namespace MediTrack.API.Controladores
         }
 
         [HttpGet("paciente/{pacienteId}")]
+        [Authorize]
         public async Task<IActionResult> ObtenerPorPaciente(int pacienteId)
         {
-            try
-            {
-                var resultado = await _servicio.ObtenerPorPaciente(pacienteId);
-                return Ok(resultado);
-            }
-            catch (Exception ex)
-            {
-                return NotFound(new { mensaje = ex.Message });
-            }
+            var resultado = await _servicio.ObtenerPorPaciente(pacienteId);
+            return Ok(resultado);
         }
 
         [HttpGet("doctor/{doctorId}")]
         [Authorize(Roles = "Administrador,Recepcionista,Doctor")]
         public async Task<IActionResult> ObtenerPorDoctor(int doctorId)
         {
-            try
-            {
-                var resultado = await _servicio.ObtenerPorDoctor(doctorId);
-                return Ok(resultado);
-            }
-            catch (Exception ex)
-            {
-                return NotFound(new { mensaje = ex.Message });
-            }
+            var resultado = await _servicio.ObtenerPorDoctor(doctorId);
+            return Ok(resultado);
         }
 
-        [HttpGet("fecha/{fecha}")]
-        [Authorize(Roles = "Administrador,Recepcionista,Doctor")]
-        public async Task<IActionResult> ObtenerPorFecha(DateTime fecha)
+        [HttpGet("sede/{sedeId}/fecha/{fecha}")]
+        [Authorize(Roles = "Administrador,Recepcionista")]
+        public async Task<IActionResult> ObtenerPorFechaYSede(int sedeId, DateTime fecha)
         {
-            var resultado = await _servicio.ObtenerPorFecha(fecha);
+            var resultado = await _servicio.ObtenerPorFechaYSede(fecha, sedeId);
             return Ok(resultado);
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrador,Recepcionista")]
+        [Authorize]
         public async Task<IActionResult> Crear([FromBody] DtoCrearCita dto)
         {
             try
             {
                 var resultado = await _servicio.Crear(dto);
                 return CreatedAtAction(nameof(ObtenerPorId), new { id = resultado.Id }, resultado);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
-            }
-        }
-
-        [HttpPut("{id}")]
-        [Authorize(Roles = "Administrador,Recepcionista")]
-        public async Task<IActionResult> Actualizar(int id, [FromBody] DtoActualizarCita dto)
-        {
-            try
-            {
-                var resultado = await _servicio.Actualizar(id, dto);
-                return Ok(resultado);
             }
             catch (Exception ex)
             {
@@ -122,7 +95,23 @@ namespace MediTrack.API.Controladores
             }
         }
 
+        [HttpPost("informe")]
+        [Authorize(Roles = "Doctor")]
+        public async Task<IActionResult> CrearInforme([FromBody] DtoCrearInformeMedico dto)
+        {
+            try
+            {
+                var resultado = await _servicio.CrearInformeMedico(dto);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
+
         [HttpPatch("{id}/cancelar")]
+        [Authorize]
         public async Task<IActionResult> Cancelar(int id)
         {
             try

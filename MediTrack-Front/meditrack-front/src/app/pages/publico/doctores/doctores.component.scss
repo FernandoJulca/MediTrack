@@ -1,0 +1,85 @@
+$verde-accent: #2d9e6b;
+$verde-oscuro: #1a4731;
+$verde-claro: #f0faf5;
+
+.page-hero {
+  background: linear-gradient(135deg, $verde-oscuro, $verde-accent);
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+}
+
+.badge-page {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.sticky-filters {
+  position: sticky;
+  top: 56px;
+  z-index: 100;
+}
+
+.bg-light-green { background: $verde-claro; }
+.text-accent { color: $verde-accent !important; }
+
+.form-control:focus, .form-select:focus {
+  border-color: $verde-accent;
+  box-shadow: 0 0 0 3px rgba(45,158,107,0.15);
+}
+
+.doctor-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(45,158,107,0.15) !important;
+  }
+}
+
+.doctor-image {
+  height: 200px;
+  background: #e8f5ef;
+}
+
+.badge-especialidad {
+  background: $verde-claro;
+  color: $verde-accent;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.horario-badge {
+  background: $verde-claro;
+  color: $verde-accent;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.btn-accent {
+  background: $verde-accent;
+  color: white;
+  border: none;
+  &:hover { background: $verde-oscuro; color: white; }
+}
+
+.btn-outline-accent {
+  border: 2px solid $verde-accent;
+  color: $verde-accent;
+  &:hover { background: $verde-accent; color: white; }
+}
+
+.cta-inner {
+  background: linear-gradient(135deg, $verde-oscuro, $verde-accent);
+}

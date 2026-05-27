@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg bg-white sticky-top" style="box-shadow: 0 1px 12px rgba(0,0,0,0.08);">
+  <div class="container">
+
+    <!-- Logo -->
+    <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/">
+      <div class="logo-icon">
+        <i class="bi bi-hospital text-white fs-6"></i>
+      </div>
+      <div>
+        <div class="fw-bold text-dark" style="font-size: 1rem; line-height: 1.1;">MediTrack</div>
+        <div class="text-muted" style="font-size: 0.65rem; letter-spacing: 0.1em;">CLÍNICA</div>
+      </div>
+    </a>
+
+    <!-- Toggler móvil -->
+    <button class="navbar-toggler border-0 shadow-none" type="button"
+      (click)="menuAbierto = !menuAbierto">
+      <i class="bi fs-4 text-dark"
+        [class.bi-list]="!menuAbierto"
+        [class.bi-x-lg]="menuAbierto"></i>
+    </button>
+
+    <!-- Links -->
+    <div class="collapse navbar-collapse" [class.show]="menuAbierto">
+      <ul class="navbar-nav mx-auto gap-1">
+        <li class="nav-item">
+          <a class="nav-link fw-medium px-3 py-2 rounded-3" routerLink="/"
+            routerLinkActive="nav-activo" [routerLinkActiveOptions]="{exact: true}">
+            Inicio
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-medium px-3 py-2 rounded-3"
+            routerLink="/sedes" routerLinkActive="nav-activo">
+            Sedes
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-medium px-3 py-2 rounded-3"
+            routerLink="/especialidades" routerLinkActive="nav-activo">
+            Especialidades
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-medium px-3 py-2 rounded-3"
+            routerLink="/doctores" routerLinkActive="nav-activo">
+            Médicos
+          </a>
+        </li>
+      </ul>
+
+      <!-- Botones -->
+      <div class="d-flex gap-2 mt-2 mt-lg-0">
+        <a routerLink="/login" class="btn btn-nav-outline px-3 py-2 rounded-3 fw-medium small">
+          <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar Sesión
+        </a>
+        <a routerLink="/registro" class="btn btn-nav-solid px-3 py-2 rounded-3 fw-medium small">
+          <i class="bi bi-person-plus me-1"></i>Registrarse
+        </a>
+      </div>
+    </div>
+
+  </div>
+</nav>

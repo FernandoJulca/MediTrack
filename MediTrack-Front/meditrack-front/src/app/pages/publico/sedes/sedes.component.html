@@ -1,0 +1,80 @@
+<!-- HERO -->
+<section class="page-hero">
+  <div class="container py-5">
+    <div class="text-white py-4">
+      <span class="badge-page mb-3 d-inline-block">ENCUÉNTRANOS</span>
+      <h1 class="display-5 fw-bold mb-2">Nuestras Sedes</h1>
+      <p class="opacity-75 fs-5 mb-0">
+        Estamos presentes en Lima para estar cerca de ti.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SEDES -->
+<section class="py-5 bg-light-green">
+  <div class="container py-3">
+    <div class="row g-4 justify-content-center">
+      <div class="col-12 col-md-6 col-lg-4" *ngFor="let sede of sedes; let i = index">
+        <div class="sede-card rounded-4 bg-white border p-4 h-100">
+
+          <div class="sede-numero mb-3">{{ i + 1 }}</div>
+          <h4 class="fw-bold mb-3">{{ sede.nombre }}</h4>
+
+          <ul class="list-unstyled mb-4">
+            <li class="d-flex align-items-start gap-2 mb-3">
+              <div class="info-icon flex-shrink-0">
+                <i class="bi bi-geo-alt-fill text-accent"></i>
+              </div>
+              <div>
+                <div class="text-muted small fw-medium">Dirección</div>
+                <div class="small">{{ sede.direccion }}, {{ sede.ciudad }}</div>
+              </div>
+            </li>
+            <li class="d-flex align-items-start gap-2 mb-3">
+              <div class="info-icon flex-shrink-0">
+                <i class="bi bi-telephone-fill text-accent"></i>
+              </div>
+              <div>
+                <div class="text-muted small fw-medium">Teléfono</div>
+                <div class="small">{{ sede.telefono }}</div>
+              </div>
+            </li>
+            <li class="d-flex align-items-start gap-2 mb-3">
+              <div class="info-icon flex-shrink-0">
+                <i class="bi bi-clock-fill text-accent"></i>
+              </div>
+              <div>
+                <div class="text-muted small fw-medium">Horario</div>
+                <div class="small">Lun - Vie: 8:00am - 6:00pm</div>
+                <div class="small">Sáb: 8:00am - 1:00pm</div>
+              </div>
+            </li>
+          </ul>
+
+          <p class="text-muted small mb-4">{{ sede.descripcion }}</p>
+
+          <button class="btn btn-outline-accent w-100 rounded-3 fw-medium">
+            <i class="bi bi-map me-2"></i>Ver en mapa
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-5">
+  <div class="container">
+    <div class="cta-inner rounded-4 p-5 d-flex flex-column flex-md-row align-items-center justify-content-between gap-4">
+      <div class="text-white">
+        <h3 class="fw-bold mb-1">¿Listo para visitarnos?</h3>
+        <p class="mb-0 opacity-75">Agenda tu cita y preséntate en la sede más cercana a ti.</p>
+      </div>
+      <a routerLink="/registro" class="btn btn-light btn-lg px-5 rounded-3 fw-bold text-accent flex-shrink-0">
+        <i class="bi bi-calendar-plus me-2"></i>Agendar Cita
+      </a>
+    </div>
+  </div>
+</section>

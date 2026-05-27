@@ -1,0 +1,122 @@
+
+<section class="page-hero">
+  <div class="container py-5">
+    <div class="text-white py-4">
+      <span class="badge-page mb-3 d-inline-block">NUESTRO EQUIPO</span>
+      <h1 class="display-5 fw-bold mb-2">Médicos Especialistas</h1>
+      <p class="opacity-75 fs-5 mb-0">
+        Conoce a nuestro equipo de especialistas certificados.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FILTROS -->
+<section class="py-4 bg-white border-bottom sticky-filters">
+  <div class="container">
+    <div class="row g-3 align-items-end">
+      <div class="col-12 col-md-5">
+        <label class="form-label small fw-semibold text-muted mb-1">Buscar médico</label>
+        <div class="input-group">
+          <span class="input-group-text bg-light border-end-0">
+            <i class="bi bi-search text-muted"></i>
+          </span>
+          <input type="text" class="form-control border-start-0 ps-0"
+            placeholder="Nombre del médico..."
+            [(ngModel)]="busqueda" (ngModelChange)="filtrar()">
+        </div>
+      </div>
+      <div class="col-12 col-md-5">
+        <label class="form-label small fw-semibold text-muted mb-1">Especialidad</label>
+        <select class="form-select" [(ngModel)]="especialidadSeleccionada" (change)="filtrar()">
+          <option [value]="0">Todas las especialidades</option>
+          <option *ngFor="let esp of especialidades" [value]="esp.id">{{ esp.nombre }}</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-2">
+        <button class="btn btn-outline-secondary w-100 rounded-3" (click)="limpiarFiltros()">
+          <i class="bi bi-x-circle me-1"></i>Limpiar
+        </button>
+      </div>
+    </div>
+    <div class="mt-2">
+      <span class="text-muted small">
+        {{ doctoresFiltrados.length }} médico(s) encontrado(s)
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- LISTADO -->
+<section class="py-5 bg-light-green">
+  <div class="container py-3">
+    <div class="row g-4" *ngIf="doctoresFiltrados.length > 0">
+      <div class="col-12 col-md-6 col-lg-4" *ngFor="let doctor of doctoresFiltrados">
+        <div class="doctor-card rounded-4 bg-white border overflow-hidden h-100">
+
+          <!-- Imagen placeholder -->
+          <div class="doctor-image d-flex align-items-center justify-content-center">
+            <i class="bi bi-person-circle text-muted" style="font-size: 5rem;"></i>
+          </div>
+
+          <div class="p-4">
+            <span class="badge-especialidad mb-2 d-inline-block">
+              {{ doctor.nombreEspecialidad }}
+            </span>
+            <h5 class="fw-bold mb-1">Dr/a. {{ doctor.nombreCompleto }}</h5>
+            <p class="text-muted small mb-3">{{ doctor.biografia }}</p>
+
+            <!-- Horarios -->
+            <div class="mb-3" *ngIf="doctor.horarios.length > 0">
+              <div class="text-muted small fw-semibold mb-2">
+                <i class="bi bi-clock me-1 text-accent"></i>Disponibilidad
+              </div>
+              <div class="d-flex flex-wrap gap-1">
+                <span class="horario-badge small"
+                  *ngFor="let h of doctor.horarios | slice:0:3">
+                  {{ h.nombreDia }}
+                </span>
+              </div>
+              <div class="text-muted small mt-1" *ngIf="doctor.horarios.length > 0">
+                <i class="bi bi-geo-alt me-1 text-accent"></i>
+                {{ doctor.horarios[0].nombreSede }}
+              </div>
+            </div>
+
+            <a routerLink="/registro"
+              class="btn btn-outline-accent w-100 rounded-3 fw-medium mt-auto">
+              <i class="bi bi-calendar-plus me-2"></i>Agendar con este médico
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sin resultados -->
+    <div *ngIf="doctoresFiltrados.length === 0" class="text-center py-5">
+      <i class="bi bi-search display-4 text-muted opacity-50"></i>
+      <h5 class="fw-bold mt-3 text-muted">No se encontraron médicos</h5>
+      <p class="text-muted small">Intenta con otros filtros de búsqueda.</p>
+      <button class="btn btn-accent rounded-3 px-4" (click)="limpiarFiltros()">
+        Ver todos los médicos
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-5">
+  <div class="container">
+    <div class="cta-inner rounded-4 p-5 d-flex flex-column flex-md-row
+      align-items-center justify-content-between gap-4">
+      <div class="text-white">
+        <h3 class="fw-bold mb-1">¿No sabes qué especialista necesitas?</h3>
+        <p class="mb-0 opacity-75">Agenda con medicina general y te orientamos.</p>
+      </div>
+      <a routerLink="/registro"
+        class="btn btn-light btn-lg px-5 rounded-3 fw-bold text-accent flex-shrink-0">
+        <i class="bi bi-calendar-plus me-2"></i>Agendar Cita
+      </a>
+    </div>
+  </div>
+</section>

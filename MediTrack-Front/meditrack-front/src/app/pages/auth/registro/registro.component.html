@@ -1,0 +1,125 @@
+<div class="registro-wrapper min-vh-100 d-flex align-items-center py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+
+        <!-- Card -->
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+          <!-- Header verde -->
+          <div class="card-header-verde p-4 text-center text-white">
+            <div class="registro-icon mx-auto mb-3">
+              <i class="bi bi-person-plus fs-3"></i>
+            </div>
+            <h4 class="fw-bold mb-1">Crear cuenta</h4>
+            <p class="opacity-75 small mb-0">Regístrate para agendar tus citas en línea</p>
+          </div>
+
+          <div class="card-body p-4 p-md-5">
+
+            <!-- Error -->
+            <div *ngIf="error"
+              class="alert alert-danger rounded-3 py-2 small d-flex align-items-center gap-2">
+              <i class="bi bi-exclamation-circle flex-shrink-0"></i>
+              {{ error }}
+            </div>
+
+            <form [formGroup]="formulario" (ngSubmit)="registrar()">
+
+              <!-- Nombres y Apellidos -->
+              <div class="row g-3 mb-3">
+                <div class="col-6">
+                  <label class="form-label small fw-semibold">Nombres</label>
+                  <input type="text" class="form-control rounded-3"
+                    [class.is-invalid]="f['nombres'].invalid && f['nombres'].touched"
+                    formControlName="nombres" placeholder="Luis">
+                  <div class="invalid-feedback small">Mínimo 2 caracteres.</div>
+                </div>
+                <div class="col-6">
+                  <label class="form-label small fw-semibold">Apellidos</label>
+                  <input type="text" class="form-control rounded-3"
+                    [class.is-invalid]="f['apellidos'].invalid && f['apellidos'].touched"
+                    formControlName="apellidos" placeholder="García">
+                  <div class="invalid-feedback small">Mínimo 2 caracteres.</div>
+                </div>
+              </div>
+
+              <!-- DNI y Teléfono -->
+              <div class="row g-3 mb-3">
+                <div class="col-6">
+                  <label class="form-label small fw-semibold">DNI</label>
+                  <input type="text" class="form-control rounded-3"
+                    [class.is-invalid]="f['dni'].invalid && f['dni'].touched"
+                    formControlName="dni" placeholder="12345678" maxlength="8">
+                  <div class="invalid-feedback small">DNI debe tener 8 dígitos.</div>
+                </div>
+                <div class="col-6">
+                  <label class="form-label small fw-semibold">Teléfono</label>
+                  <input type="text" class="form-control rounded-3"
+                    [class.is-invalid]="f['telefono'].invalid && f['telefono'].touched"
+                    formControlName="telefono" placeholder="999888777">
+                  <div class="invalid-feedback small">Teléfono inválido.</div>
+                </div>
+              </div>
+
+              <!-- Correo -->
+              <div class="mb-3">
+                <label class="form-label small fw-semibold">Correo electrónico</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-end-0">
+                    <i class="bi bi-envelope text-muted"></i>
+                  </span>
+                  <input type="email" class="form-control border-start-0 rounded-end-3"
+                    [class.is-invalid]="f['correo'].invalid && f['correo'].touched"
+                    formControlName="correo" placeholder="correo@ejemplo.com">
+                  <div class="invalid-feedback small">Ingresa un correo válido.</div>
+                </div>
+              </div>
+
+              <!-- Contraseña -->
+              <div class="mb-4">
+                <label class="form-label small fw-semibold">Contraseña</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light border-end-0">
+                    <i class="bi bi-lock text-muted"></i>
+                  </span>
+                  <input [type]="mostrarContrasena ? 'text' : 'password'"
+                    class="form-control border-start-0 border-end-0"
+                    [class.is-invalid]="f['contrasena'].invalid && f['contrasena'].touched"
+                    formControlName="contrasena" placeholder="Mínimo 6 caracteres">
+                  <button type="button"
+                    class="input-group-text bg-light border-start-0"
+                    (click)="mostrarContrasena = !mostrarContrasena">
+                    <i class="bi text-muted"
+                      [class.bi-eye]="!mostrarContrasena"
+                      [class.bi-eye-slash]="mostrarContrasena"></i>
+                  </button>
+                  <div class="invalid-feedback small">Mínimo 6 caracteres.</div>
+                </div>
+              </div>
+
+              <!-- Botón -->
+              <button type="submit" class="btn btn-accent w-100 py-2 rounded-3 fw-semibold"
+                [disabled]="cargando">
+                <span *ngIf="cargando" class="spinner-border spinner-border-sm me-2"></span>
+                <i *ngIf="!cargando" class="bi bi-person-check me-2"></i>
+                {{ cargando ? 'Registrando...' : 'Crear cuenta' }}
+              </button>
+
+            </form>
+
+            <!-- Login link -->
+            <div class="text-center mt-4 pt-3 border-top">
+              <span class="text-muted small">¿Ya tienes cuenta?</span>
+              <a routerLink="/login" class="text-accent fw-semibold small ms-1 text-decoration-none">
+                Iniciar sesión
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

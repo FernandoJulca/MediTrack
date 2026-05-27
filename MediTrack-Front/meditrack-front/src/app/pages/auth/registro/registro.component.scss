@@ -1,7 +1,8 @@
 $verde-accent: #2d9e6b;
 $verde-oscuro: #1a4731;
+$verde-claro: #f0faf5;
 
-.login-wrapper {
+.registro-wrapper {
   background: linear-gradient(135deg, #f0faf5 0%, #e8f5ef 100%);
 }
 
@@ -9,7 +10,7 @@ $verde-oscuro: #1a4731;
   background: linear-gradient(135deg, $verde-oscuro, $verde-accent);
 }
 
-.login-icon {
+.registro-icon {
   width: 64px;
   height: 64px;
   background: rgba(255,255,255,0.2);
@@ -21,7 +22,7 @@ $verde-oscuro: #1a4731;
 
 .text-accent { color: $verde-accent !important; }
 
-.form-control:focus {
+.form-control:focus, .form-select:focus {
   border-color: $verde-accent;
   box-shadow: 0 0 0 3px rgba(45,158,107,0.15);
 }
@@ -33,13 +34,4 @@ $verde-oscuro: #1a4731;
   transition: background 0.2s;
   &:hover:not(:disabled) { background: $verde-oscuro; }
   &:disabled { opacity: 0.7; }
-}
-
-.badge-prueba {
-  background: #e8f5ef;
-  color: $verde-accent;
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-size: 0.7rem;
-  font-weight: 500;
 }

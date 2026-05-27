@@ -36,6 +36,21 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
+  registrar(datos: any): Observable<AuthResponse> {
+  return this.http.post<AuthResponse>(`${this.URL}/registrar`, datos).pipe(
+    tap(res => {
+      const sesion: UsuarioSesion = {
+        token: res.token,
+        correo: res.correo,
+        nombreCompleto: res.nombreCompleto,
+        rol: res.rol
+      };
+      localStorage.setItem(this.KEY, JSON.stringify(sesion));
+      this.sesionSubject.next(sesion);
+    })
+  );
+}
+
   get sesionActual(): UsuarioSesion | null {
     return this.sesionSubject.value;
   }

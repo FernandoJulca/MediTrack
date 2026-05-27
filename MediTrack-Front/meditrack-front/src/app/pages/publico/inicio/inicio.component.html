@@ -1,0 +1,232 @@
+<!-- HERO con slider visual -->
+<section class="hero position-relative overflow-hidden">
+  <div class="hero-overlay"></div>
+  <div class="hero-bg"></div>
+  <div class="container position-relative z-1 py-5">
+    <div class="row align-items-center min-vh-75">
+      <div class="col-12 col-lg-6 text-white py-5">
+        <span class="badge-clinica mb-3 d-inline-block">
+          <i class="bi bi-hospital me-1"></i> CLÍNICA MEDITRACK
+        </span>
+        <h1 class="display-4 fw-bold lh-sm mb-3">
+          Atención Médica <br><span class="text-accent">Personalizada</span>
+        </h1>
+        <p class="fs-5 opacity-75 mb-4">
+          Tecnología de vanguardia y trato humano para una salud sin fronteras.
+        </p>
+        <div class="d-flex gap-3 flex-wrap">
+          <a routerLink="/registro" class="btn btn-accent btn-lg px-4 rounded-3 fw-semibold">
+            <i class="bi bi-calendar-plus me-2"></i>Agendar Cita
+          </a>
+          <a routerLink="/sedes" class="btn btn-outline-light btn-lg px-4 rounded-3 fw-semibold">
+            <i class="bi bi-geo-alt me-2"></i>Nuestras Sedes
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="stats-bar position-relative z-1">
+    <div class="container-fluid">
+      <div class="row g-0">
+        <div class="col-6 col-md-3">
+          <div class="stat-item text-center text-white py-4">
+            <div class="stat-number">25+</div>
+            <div class="stat-label">Años de experiencia</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-item text-center text-white py-4">
+            <div class="stat-number">120+</div>
+            <div class="stat-label">Especialistas certificados</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-item text-center text-white py-4">
+            <div class="stat-number">3</div>
+            <div class="stat-label">Sedes en Lima</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-item text-center text-white py-4">
+            <div class="stat-number">98%</div>
+            <div class="stat-label">Pacientes satisfechos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIÉNES SOMOS -->
+<section class="py-5 bg-light-green">
+  <div class="container py-4">
+    <div class="row align-items-center g-5">
+      <div class="col-12 col-lg-6">
+        <span class="text-accent fw-semibold small text-uppercase tracking-wide">
+          QUIÉNES SOMOS
+        </span>
+        <h2 class="fw-bold mt-2 mb-3 display-6">Salud con corazón desde 1999</h2>
+        <p class="text-muted mb-3">
+          MediTrack nació con una misión clara: brindar atención médica de excelencia
+          con calidez humana. Durante más de 25 años hemos acompañado a miles de familias
+          limeñas en cada etapa de su vida.
+        </p>
+        <p class="text-muted mb-4">
+          Contamos con infraestructura de última generación, laboratorio clínico propio,
+          imágenes diagnósticas avanzadas y un equipo de más de 120 especialistas
+          comprometidos con tu bienestar.
+        </p>
+        <div class="row g-3">
+          <div class="col-6">
+            <div class="feature-badge d-flex align-items-center gap-2 p-3 rounded-3 bg-white">
+              <i class="bi bi-patch-check text-accent fs-5"></i>
+              <span class="small fw-medium">Certificación JCI</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="feature-badge d-flex align-items-center gap-2 p-3 rounded-3 bg-white">
+              <i class="bi bi-activity text-accent fs-5"></i>
+              <span class="small fw-medium">Laboratorio 24/7</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="feature-badge d-flex align-items-center gap-2 p-3 rounded-3 bg-white">
+              <i class="bi bi-heart-pulse text-accent fs-5"></i>
+              <span class="small fw-medium">Urgencias siempre</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="feature-badge d-flex align-items-center gap-2 p-3 rounded-3 bg-white">
+              <i class="bi bi-camera-video text-accent fs-5"></i>
+              <span class="small fw-medium">Telemedicina</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-6">
+        <div class="about-image-wrapper position-relative">
+          <div class="about-image-placeholder rounded-4">
+            <i class="bi bi-people display-1 text-accent opacity-50"></i>
+          </div>
+          <div class="about-badge-float">
+            <div class="fw-bold fs-4 text-accent">15.000+</div>
+            <div class="small text-muted">Pacientes al año</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ESPECIALIDADES -->
+<section class="py-5">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <span class="text-accent fw-semibold small text-uppercase tracking-wide">LO QUE OFRECEMOS</span>
+      <h2 class="fw-bold mt-2 display-6">Nuestras Especialidades</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-6 col-md-4 col-lg-3" *ngFor="let esp of especialidades">
+        <div class="especialidad-card p-4 rounded-4 bg-white border h-100">
+          <div class="esp-icon mb-3">
+            <i class="bi {{ esp.icono }} text-accent fs-4"></i>
+          </div>
+          <h6 class="fw-bold mb-1">{{ esp.nombre }}</h6>
+          <p class="text-muted small mb-0">{{ esp.descripcion }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-5">
+      <a routerLink="/especialidades" class="btn btn-outline-accent btn-lg px-5 rounded-3 fw-semibold">
+        Ver todas las especialidades <i class="bi bi-arrow-right ms-2"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- DOCTORES DESTACADOS -->
+<section class="py-5 bg-light-green">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <span class="text-accent fw-semibold small text-uppercase tracking-wide">NUESTRO EQUIPO</span>
+      <h2 class="fw-bold mt-2 display-6">Médicos Destacados</h2>
+      <p class="text-muted">Especialistas certificados con años de experiencia y vocación por el cuidado humano.</p>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-12 col-md-6 col-lg-4" *ngFor="let doctor of doctores | slice:0:3">
+        <div class="doctor-card rounded-4 overflow-hidden bg-white border">
+          <div class="doctor-image-placeholder">
+            <i class="bi bi-person-circle text-muted" style="font-size: 5rem;"></i>
+          </div>
+          <div class="p-4">
+            <span class="text-accent fw-semibold small text-uppercase">{{ doctor.nombreEspecialidad }}</span>
+            <h5 class="fw-bold mt-1 mb-1">Dr/a. {{ doctor.nombreCompleto }}</h5>
+            <p class="text-muted small mb-3">{{ doctor.biografia }}</p>
+            <a routerLink="/registro" class="btn btn-outline-accent w-100 rounded-3 fw-medium">
+              Agendar con este médico
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <a routerLink="/doctores" class="btn btn-outline-accent btn-lg px-5 rounded-3 fw-semibold">
+        Ver todos los médicos <i class="bi bi-arrow-right ms-2"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- SEDES -->
+<section class="py-5">
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <span class="text-accent fw-semibold small text-uppercase tracking-wide">ENCUÉNTRANOS</span>
+      <h2 class="fw-bold mt-2 display-6">Nuestras Sedes</h2>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-12 col-md-6 col-lg-4" *ngFor="let sede of sedes">
+        <div class="sede-card p-4 rounded-4 bg-white border h-100">
+          <div class="sede-icon mb-3">
+            <i class="bi bi-geo-alt-fill text-white"></i>
+          </div>
+          <h5 class="fw-bold mb-3">{{ sede.nombre }}</h5>
+          <ul class="list-unstyled mb-4">
+            <li class="d-flex align-items-start gap-2 mb-2 text-muted small">
+              <i class="bi bi-geo-alt text-accent mt-1 flex-shrink-0"></i>
+              {{ sede.direccion }}
+            </li>
+            <li class="d-flex align-items-center gap-2 mb-2 text-muted small">
+              <i class="bi bi-telephone text-accent flex-shrink-0"></i>
+              {{ sede.telefono }}
+            </li>
+            <li class="d-flex align-items-center gap-2 text-muted small">
+              <i class="bi bi-clock text-accent flex-shrink-0"></i>
+              Lun - Vie: 8am - 6pm
+            </li>
+          </ul>
+          <button class="btn btn-light-green w-100 rounded-3 fw-medium small">
+            Ver en mapa
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section py-5">
+  <div class="container">
+    <div class="cta-inner rounded-4 p-5 d-flex flex-column flex-md-row align-items-center justify-content-between gap-4">
+      <div class="text-white">
+        <h3 class="fw-bold mb-1">¿Listo para cuidar tu salud?</h3>
+        <p class="mb-0 opacity-75">Agenda tu cita hoy y recibe atención prioritaria en cualquiera de nuestras sedes.</p>
+      </div>
+      <a routerLink="/registro" class="btn btn-light btn-lg px-5 rounded-3 fw-bold text-accent flex-shrink-0">
+        <i class="bi bi-calendar-plus me-2"></i>Agendar Cita Ahora
+      </a>
+    </div>
+  </div>
+</section>

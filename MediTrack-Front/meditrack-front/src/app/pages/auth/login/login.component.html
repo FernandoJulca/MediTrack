@@ -1,95 +1,118 @@
-<div class="login-wrapper d-flex align-items-center justify-content-center min-vh-100">
+<div class="login-wrapper min-vh-100 d-flex align-items-center py-5">
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-12 col-sm-10 col-md-7 col-lg-5 col-xl-4">
+      <div class="col-12 col-sm-9 col-md-7 col-lg-5 col-xl-4">
 
-        <!-- Card login -->
-        <div class="card shadow-lg border-0 rounded-4">
-          <div class="card-body p-5">
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
 
-            <!-- Logo y título -->
-            <div class="text-center mb-4">
-              <div class="login-icon mb-3">
-                <i class="bi bi-hospital fs-1 text-primary"></i>
-              </div>
-              <h4 class="fw-bold text-dark">MediTrack</h4>
-              <p class="text-muted small">Sistema de Gestión Clínica</p>
+          <!-- Header verde -->
+          <div class="card-header-verde p-4 text-center text-white">
+            <div class="login-icon mx-auto mb-3">
+              <i class="bi bi-hospital fs-3"></i>
+            </div>
+            <h4 class="fw-bold mb-1">Bienvenido</h4>
+            <p class="opacity-75 small mb-0">Inicia sesión en MediTrack</p>
+          </div>
+
+          <div class="card-body p-4 p-md-5">
+
+            <!-- Error -->
+            <div *ngIf="error"
+              class="alert alert-danger rounded-3 py-2 small d-flex align-items-center gap-2">
+              <i class="bi bi-exclamation-circle flex-shrink-0"></i>
+              {{ error }}
+              <button type="button" class="btn-close btn-sm ms-auto"
+                (click)="error = ''"></button>
             </div>
 
-            <!-- Alerta de error -->
-            <div *ngIf="error" class="alert alert-danger alert-dismissible rounded-3 py-2 small" role="alert">
-              <i class="bi bi-exclamation-circle me-1"></i>{{ error }}
-              <button type="button" class="btn-close btn-sm" (click)="error = ''"></button>
-            </div>
-
-            <!-- Formulario -->
             <form [formGroup]="formulario" (ngSubmit)="iniciarSesion()">
 
               <!-- Correo -->
               <div class="mb-3">
-                <label class="form-label fw-semibold small">Correo electrónico</label>
+                <label class="form-label small fw-semibold">Correo electrónico</label>
                 <div class="input-group">
                   <span class="input-group-text bg-light border-end-0">
                     <i class="bi bi-envelope text-muted"></i>
                   </span>
-                  <input
-                    type="email"
-                    class="form-control border-start-0 ps-0"
+                  <input type="email"
+                    class="form-control border-start-0 ps-0 rounded-end-3"
                     [class.is-invalid]="correo?.invalid && correo?.touched"
                     formControlName="correo"
-                    placeholder="correo@ejemplo.com"
-                    autocomplete="email">
-                  <div class="invalid-feedback">
-                    <span *ngIf="correo?.errors?.['required']">El correo es requerido.</span>
-                    <span *ngIf="correo?.errors?.['email']">Ingresa un correo válido.</span>
+                    placeholder="correo@ejemplo.com">
+                  <div class="invalid-feedback small">
+                    <span *ngIf="correo?.errors?.['required']">Requerido.</span>
+                    <span *ngIf="correo?.errors?.['email']">Correo inválido.</span>
                   </div>
                 </div>
               </div>
 
               <!-- Contraseña -->
               <div class="mb-4">
-                <label class="form-label fw-semibold small">Contraseña</label>
+                <label class="form-label small fw-semibold">Contraseña</label>
                 <div class="input-group">
                   <span class="input-group-text bg-light border-end-0">
                     <i class="bi bi-lock text-muted"></i>
                   </span>
-                  <input
-                    [type]="mostrarContrasena ? 'text' : 'password'"
+                  <input [type]="mostrarContrasena ? 'text' : 'password'"
                     class="form-control border-start-0 border-end-0 ps-0"
                     [class.is-invalid]="contrasena?.invalid && contrasena?.touched"
                     formControlName="contrasena"
-                    placeholder="••••••••"
-                    autocomplete="current-password">
-                  <button
-                    type="button"
+                    placeholder="••••••••">
+                  <button type="button"
                     class="input-group-text bg-light border-start-0"
                     (click)="mostrarContrasena = !mostrarContrasena">
                     <i class="bi text-muted"
                       [class.bi-eye]="!mostrarContrasena"
                       [class.bi-eye-slash]="mostrarContrasena"></i>
                   </button>
-                  <div class="invalid-feedback">
-                    <span *ngIf="contrasena?.errors?.['required']">La contraseña es requerida.</span>
+                  <div class="invalid-feedback small">
+                    <span *ngIf="contrasena?.errors?.['required']">Requerida.</span>
                     <span *ngIf="contrasena?.errors?.['minlength']">Mínimo 6 caracteres.</span>
                   </div>
                 </div>
               </div>
 
               <!-- Botón -->
-              <button
-                type="submit"
-                class="btn btn-primary w-100 py-2 fw-semibold rounded-3"
+              <button type="submit"
+                class="btn btn-accent w-100 py-2 rounded-3 fw-semibold"
                 [disabled]="cargando">
-                <span *ngIf="cargando" class="spinner-border spinner-border-sm me-2"></span>
+                <span *ngIf="cargando"
+                  class="spinner-border spinner-border-sm me-2"></span>
                 <i *ngIf="!cargando" class="bi bi-box-arrow-in-right me-2"></i>
                 {{ cargando ? 'Iniciando sesión...' : 'Iniciar sesión' }}
               </button>
 
             </form>
 
-            
+            <!-- Registro link -->
+            <div class="text-center mt-4 pt-3 border-top">
+              <span class="text-muted small">¿No tienes cuenta?</span>
+              <a routerLink="/registro"
+                class="text-accent fw-semibold small ms-1 text-decoration-none">
+                Registrarse
+              </a>
+            </div>
+
+            <!-- Usuarios de prueba -->
+            <div class="mt-3 p-3 bg-light rounded-3">
+              <p class="text-muted small text-center mb-2 fw-semibold">Usuarios de prueba</p>
+              <div class="d-flex flex-wrap gap-1 justify-content-center">
+                <span class="badge-prueba">admin&#64;meditrack.com</span>
+                <span class="badge-prueba">doctor1&#64;meditrack.com</span>
+                <span class="badge-prueba">recepcion&#64;meditrack.com</span>
+              </div>
+              <p class="text-muted text-center mt-2 mb-0" style="font-size:0.7rem;">
+                Contraseña: Admin123!
+              </p>
+            </div>
 
           </div>
+        </div>
+
+        <div class="text-center mt-3">
+          <a routerLink="/" class="text-muted small text-decoration-none">
+            <i class="bi bi-arrow-left me-1"></i>Volver al inicio
+          </a>
         </div>
 
       </div>

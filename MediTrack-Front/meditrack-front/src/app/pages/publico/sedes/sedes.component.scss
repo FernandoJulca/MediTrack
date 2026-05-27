@@ -1,0 +1,62 @@
+$verde-accent: #2d9e6b;
+$verde-oscuro: #1a4731;
+$verde-claro: #f0faf5;
+
+.page-hero {
+  background: linear-gradient(135deg, $verde-oscuro, $verde-accent);
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+}
+
+.badge-page {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.bg-light-green { background: $verde-claro; }
+.text-accent { color: $verde-accent !important; }
+
+.btn-outline-accent {
+  border: 2px solid $verde-accent;
+  color: $verde-accent;
+  background: transparent;
+  &:hover { background: $verde-accent; color: white; }
+}
+
+.sede-card {
+  transition: box-shadow 0.2s;
+  &:hover { box-shadow: 0 8px 24px rgba(45,158,107,0.12) !important; }
+}
+
+.sede-numero {
+  width: 40px;
+  height: 40px;
+  background: $verde-claro;
+  color: $verde-accent;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.info-icon {
+  width: 32px;
+  height: 32px;
+  background: $verde-claro;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cta-inner {
+  background: linear-gradient(135deg, $verde-oscuro, $verde-accent);
+}

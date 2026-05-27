@@ -1,0 +1,75 @@
+$verde-accent: #2d9e6b;
+$verde-oscuro: #1a4731;
+$verde-claro: #f0faf5;
+
+.page-hero {
+  background: linear-gradient(135deg, $verde-oscuro, $verde-accent);
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+}
+
+.badge-page {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.bg-light-green { background: $verde-claro; }
+.text-accent { color: $verde-accent !important; }
+
+.esp-card {
+  cursor: pointer;
+  transition: all 0.2s;
+  &:hover { box-shadow: 0 6px 20px rgba(45,158,107,0.12) !important; }
+}
+
+.esp-activa {
+  border-color: $verde-accent !important;
+  box-shadow: 0 6px 20px rgba(45,158,107,0.15) !important;
+}
+
+.esp-icon {
+  width: 52px;
+  height: 52px;
+  background: $verde-claro;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rotate { transform: rotate(180deg); transition: transform 0.2s; }
+
+.btn-accent-sm {
+  background: $verde-claro;
+  color: $verde-accent;
+  border: 1px solid $verde-accent;
+  padding: 4px 12px;
+  &:hover { background: $verde-accent; color: white; }
+}
+
+.doctores-collapse {
+  border-top: 1px solid #e8f5ef;
+  padding-top: 0.75rem;
+}
+
+.doctor-mini {
+  background: $verde-claro;
+  transition: background 0.2s;
+  &:hover { background: darken($verde-claro, 3%); }
+}
+
+.doctor-avatar-sm {
+  font-size: 1.8rem;
+  line-height: 1;
+  color: $verde-accent;
+}
+
+.cta-inner {
+  background: linear-gradient(135deg, $verde-oscuro, $verde-accent);
+}

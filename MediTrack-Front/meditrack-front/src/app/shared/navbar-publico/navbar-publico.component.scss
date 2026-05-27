@@ -1,0 +1,34 @@
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #2d9e6b, #1a4731);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.nav-link {
+  color: #444 !important;
+  padding: 0.4rem 0.8rem !important;
+  border-radius: 8px;
+  transition: all 0.2s;
+
+  &:hover, &.active {
+    color: #2d9e6b !important;
+    background: #f0faf5;
+  }
+}
+
+.btn-outline-primary {
+  border-color: #2d9e6b !important;
+  color: #2d9e6b !important;
+  &:hover { background: #2d9e6b !important; color: white !important; }
+}
+
+.btn-primary {
+  background: #2d9e6b !important;
+  border-color: #2d9e6b !important;
+  &:hover { background: #1a4731 !important; }
+}

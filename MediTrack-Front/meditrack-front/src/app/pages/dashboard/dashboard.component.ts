@@ -1,20 +1,28 @@
-import { CommonModule } from "@angular/common";
-import { Component } from "@angular/core";
-import { ReactiveFormsModule } from "@angular/forms";
-import { AuthService } from "../../core/services/auth.service";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  template: ''
 })
-export class DashboardComponent{
+export class DashboardComponent implements OnInit {
+  constructor(private authService: AuthService, private router: Router) {}
 
-   constructor(private authService: AuthService) {}
-
-  cerrarSesion(): void {
-    this.authService.logout();
+  ngOnInit(): void {
+    const rol = this.authService.rol;
+    switch (rol) {
+      case 'Paciente':
+        this.router.navigate(['/paciente/dashboard']); break;
+      case 'Doctor':
+        this.router.navigate(['/doctor/dashboard']); break;
+      case 'Recepcionista':
+        this.router.navigate(['/recepcion/dashboard']); break;
+      case 'Administrador':
+        this.router.navigate(['/admin/dashboard']); break;
+      default:
+        this.router.navigate(['/login']);
+    }
   }
 }

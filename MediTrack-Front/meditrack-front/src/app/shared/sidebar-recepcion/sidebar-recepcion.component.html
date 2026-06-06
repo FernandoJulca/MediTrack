@@ -1,0 +1,16 @@
+<aside class="sidebar">
+  <div class="sidebar-label px-4 pt-4 pb-2 text-uppercase small fw-bold text-muted">
+    Recepción
+  </div>
+  <nav class="py-2">
+    <ul class="list-unstyled mb-0">
+      <li *ngFor="let item of menu">
+        <a [routerLink]="item.ruta" routerLinkActive="activo"
+          class="menu-item d-flex align-items-center gap-3 px-4 py-3 text-decoration-none">
+          <i class="bi {{ item.icono }} fs-5"></i>
+          <span class="menu-label">{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</aside>

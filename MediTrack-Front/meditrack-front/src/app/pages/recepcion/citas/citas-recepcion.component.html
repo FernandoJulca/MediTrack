@@ -1,0 +1,200 @@
+<div class="p-4">
+
+  <!-- Header -->
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+      <h5 class="fw-bold mb-0">Citas del Día</h5>
+      <p class="text-muted small mb-0">
+        Gestiona el estado de las citas de hoy
+      </p>
+    </div>
+  </div>
+
+  <!-- Éxito -->
+  <div *ngIf="mensajeExito"
+    class="alert alert-success rounded-3 small d-flex align-items-center gap-2 mb-3">
+    <i class="bi bi-check-circle-fill"></i>{{ mensajeExito }}
+  </div>
+
+  <!-- Filtros -->
+  <div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body p-3">
+      <div class="row g-2 align-items-end">
+        <div class="col-12 col-md-3">
+          <label class="form-label small fw-semibold mb-1">Sede</label>
+          <select class="form-select form-select-sm rounded-3"
+            [(ngModel)]="sedeSeleccionada" (change)="cargarCitas()">
+            <option *ngFor="let s of sedes" [value]="s.id">{{ s.nombre }}</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-3">
+          <label class="form-label small fw-semibold mb-1">Fecha</label>
+          <input type="date" class="form-control form-control-sm rounded-3"
+            [(ngModel)]="fecha" (change)="cargarCitas()">
+        </div>
+        <div class="col-12 col-md-3">
+          <label class="form-label small fw-semibold mb-1">Estado</label>
+          <select class="form-select form-select-sm rounded-3"
+            [(ngModel)]="filtroEstado" (change)="filtrar()">
+            <option *ngFor="let e of estadosFiltro"
+              [value]="e.valor">{{ e.etiqueta }}</option>
+          </select>
+        </div>
+        <div class="col-auto">
+          <span class="text-muted small">{{ citasFiltradas.length }} cita(s)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cargando -->
+  <div *ngIf="cargando" class="text-center py-5">
+    <div class="spinner-border text-accent"></div>
+  </div>
+
+  <!-- Sin citas -->
+  <div *ngIf="!cargando && citasFiltradas.length === 0"
+    class="text-center py-5">
+    <i class="bi bi-calendar-x display-4 text-muted opacity-50"></i>
+    <h6 class="fw-bold mt-3 text-muted">Sin citas</h6>
+    <p class="text-muted small">No hay citas para los filtros seleccionados.</p>
+  </div>
+
+  <!-- Lista de citas -->
+  <div class="row g-3" *ngIf="!cargando && citasFiltradas.length > 0">
+    <div class="col-12" *ngFor="let cita of citasFiltradas">
+      <div class="cita-card card border-0 shadow-sm rounded-4 p-4">
+        <div class="row align-items-center g-3">
+
+          <!-- Hora -->
+          <div class="col-auto">
+            <div class="hora-box text-center">
+              <div class="fw-bold text-accent">
+                {{ cita.fechaHora | date:'h:mm' }}
+              </div>
+              <div class="text-muted" style="font-size:0.65rem;">
+                {{ cita.fechaHora | date:'a' }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Info paciente -->
+          <div class="col">
+            <div class="fw-semibold">{{ cita.nombrePaciente }}</div>
+            <div class="text-muted small">
+              <i class="bi bi-person-badge me-1 text-accent"></i>
+              Dr/a. {{ cita.nombreDoctor }} —
+              {{ cita.nombreEspecialidad }}
+            </div>
+            <div class="text-muted small">
+              <i class="bi bi-chat-left-text me-1 text-accent"></i>
+              {{ cita.motivo }}
+            </div>
+          </div>
+
+          <!-- Estado -->
+          <div class="col-auto">
+            <span class="badge-estado {{ colorEstado(cita.estado) }}">
+              {{ cita.estado }}
+            </span>
+          </div>
+
+          <!-- Acciones -->
+          <div class="col-auto d-flex gap-2 flex-wrap">
+            <button class="btn btn-sm btn-outline-secondary rounded-3"
+              (click)="verDetalle(cita)">
+              <i class="bi bi-eye"></i>
+            </button>
+            <div *ngIf="puedeActuar(cita.estado)" class="d-flex gap-1">
+              <button *ngFor="let a of acciones"
+                class="btn btn-sm rounded-3"
+                [class]="'btn-outline-' + a.color"
+                [disabled]="cambiando === cita.id"
+                (click)="cambiarEstado(cita.id, a.valor)"
+                [title]="a.etiqueta">
+                <span *ngIf="cambiando === cita.id"
+                  class="spinner-border spinner-border-sm"></span>
+                <i *ngIf="cambiando !== cita.id"
+                  class="bi {{ a.icono }}"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL DETALLE -->
+<div class="modal-overlay" *ngIf="citaDetalle" (click)="cerrarDetalle()">
+  <div class="modal-panel rounded-4 shadow-lg" (click)="$event.stopPropagation()">
+    <div class="modal-header-verde p-4 text-white rounded-top-4">
+      <div class="d-flex align-items-center justify-content-between">
+        <h6 class="fw-bold mb-0">
+          <i class="bi bi-calendar-check me-2"></i>Detalle de Cita
+        </h6>
+        <button class="btn-close-white" (click)="cerrarDetalle()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+    <div class="p-4" *ngIf="citaDetalle">
+      <div class="row g-3 mb-3">
+        <div class="col-6">
+          <div class="detail-label">Paciente</div>
+          <div class="detail-value">{{ citaDetalle.nombrePaciente }}</div>
+        </div>
+        <div class="col-6">
+          <div class="detail-label">Estado</div>
+          <span class="badge-estado {{ colorEstado(citaDetalle.estado) }}">
+            {{ citaDetalle.estado }}
+          </span>
+        </div>
+        <div class="col-6">
+          <div class="detail-label">Doctor</div>
+          <div class="detail-value">Dr/a. {{ citaDetalle.nombreDoctor }}</div>
+        </div>
+        <div class="col-6">
+          <div class="detail-label">Especialidad</div>
+          <div class="detail-value">{{ citaDetalle.nombreEspecialidad }}</div>
+        </div>
+        <div class="col-6">
+          <div class="detail-label">Fecha y hora</div>
+          <div class="detail-value">
+            {{ citaDetalle.fechaHora | date:'dd/MM/yyyy h:mm a' }}
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="detail-label">Sede</div>
+          <div class="detail-value">{{ citaDetalle.nombreSede }}</div>
+        </div>
+        <div class="col-12">
+          <div class="detail-label">Motivo</div>
+          <div class="detail-value">{{ citaDetalle.motivo }}</div>
+        </div>
+      </div>
+
+      <!-- Acciones rápidas en modal -->
+      <div *ngIf="puedeActuar(citaDetalle.estado)"
+        class="border-top pt-3 mt-3">
+        <div class="small fw-semibold text-muted mb-2">Cambiar estado</div>
+        <div class="d-flex gap-2 flex-wrap">
+          <button *ngFor="let a of acciones"
+            class="btn btn-sm rounded-3 fw-medium"
+            [class]="'btn-outline-' + a.color"
+            [disabled]="cambiando === citaDetalle.id"
+            (click)="cambiarEstado(citaDetalle.id, a.valor)">
+            <i class="bi {{ a.icono }} me-1"></i>{{ a.etiqueta }}
+          </button>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end mt-3">
+        <button class="btn btn-outline-secondary rounded-3 small"
+          (click)="cerrarDetalle()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<nav class="navbar-privado d-flex align-items-center justify-content-between px-4">
+
+  <!-- Logo -->
+  <a routerLink="/dashboard" class="brand d-flex align-items-center gap-2 text-decoration-none">
+    <div class="logo-icon">
+      <i class="bi bi-hospital text-white"></i>
+    </div>
+    <div>
+      <div class="fw-bold text-dark" style="font-size: 0.95rem; line-height: 1.1;">MediTrack</div>
+      <div class="text-muted" style="font-size: 0.6rem; letter-spacing: 0.1em;">CLÍNICA</div>
+    </div>
+  </a>
+
+  <!-- Centro — bienvenida -->
+  <div class="d-none d-md-block text-muted small">
+    <i class="bi bi-circle-fill text-accent me-1" style="font-size: 0.5rem;"></i>
+    Bienvenido, <strong class="text-dark">{{ authService.sesionActual?.nombreCompleto }}</strong>
+  </div>
+
+  <!-- Derecha -->
+  <div class="d-flex align-items-center gap-3">
+    <span class="badge-rol">{{ authService.sesionActual?.rol }}</span>
+    <div class="dropdown">
+      <button class="btn-avatar dropdown-toggle" (click)="menuAbierto = !menuAbierto">
+        <i class="bi bi-person-circle fs-5 text-muted"></i>
+      </button>
+      <div class="dropdown-menu dropdown-menu-end shadow rounded-3 border-0 p-2"
+        [class.show]="menuAbierto">
+        <div class="px-3 py-2 border-bottom mb-1">
+          <div class="fw-semibold small">{{ authService.sesionActual?.nombreCompleto }}</div>
+          <div class="text-muted" style="font-size: 0.75rem;">{{ authService.sesionActual?.correo }}</div>
+        </div>
+        <button class="dropdown-item rounded-2 small text-danger d-flex align-items-center gap-2"
+          (click)="cerrarSesion()">
+          <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+        </button>
+      </div>
+    </div>
+  </div>
+
+</nav>

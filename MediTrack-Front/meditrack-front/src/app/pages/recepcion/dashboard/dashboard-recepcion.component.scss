@@ -1,0 +1,53 @@
+$verde-accent: #2d9e6b;
+$verde-oscuro: #1a4731;
+$verde-claro: #f0faf5;
+
+.bienvenida {
+  background: linear-gradient(135deg, $verde-oscuro, $verde-accent);
+}
+
+.text-accent { color: $verde-accent !important; }
+
+.fecha-badge {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  min-width: 60px;
+}
+
+.stat-card {
+  transition: box-shadow 0.2s;
+  &:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08) !important; }
+}
+
+.form-select:focus, .form-control:focus {
+  border-color: $verde-accent;
+  box-shadow: 0 0 0 3px rgba(45,158,107,0.15);
+}
+
+.table-header th {
+  background: $verde-claro;
+  color: #555;
+  border-bottom: 2px solid #e0f0e8;
+}
+
+.table-hover tbody tr:hover {
+  background: $verde-claro;
+}
+
+.btn-xs {
+  padding: 2px 8px;
+  font-size: 0.75rem;
+}
+
+// Badges
+.badge-estado {
+  padding: 3px 10px; border-radius: 12px;
+  font-size: 0.7rem; font-weight: 600; white-space: nowrap;
+}
+.badge-agendada { background: #e3f2fd; color: #1565c0; }
+.badge-confirmada { background: #e8f5e9; color: #2e7d32; }
+.badge-llego { background: #f3e5f5; color: #6a1b9a; }
+.badge-atencion { background: #fff3e0; color: #e65100; }
+.badge-completada { background: #e8f5e9; color: #1b5e20; }
+.badge-nopresento { background: #fce4ec; color: #880e4f; }
+.badge-cancelada { background: #ffebee; color: #c62828; }

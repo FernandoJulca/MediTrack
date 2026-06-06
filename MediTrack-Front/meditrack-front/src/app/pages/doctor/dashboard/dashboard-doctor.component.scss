@@ -1,0 +1,77 @@
+$verde-accent: #2d9e6b;
+$verde-oscuro: #1a4731;
+$verde-claro: #f0faf5;
+
+.bienvenida {
+  background: linear-gradient(135deg, $verde-oscuro, $verde-accent);
+}
+
+.text-accent { color: $verde-accent !important; }
+
+.btn-accent {
+  background: $verde-accent; color: white; border: none;
+  &:hover { background: $verde-oscuro; color: white; }
+}
+
+.btn-outline-accent {
+  border: 1.5px solid $verde-accent; color: $verde-accent;
+  &:hover { background: $verde-accent; color: white; }
+}
+
+.stat-card {
+  transition: box-shadow 0.2s;
+  &:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08) !important; }
+}
+
+.stat-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.bg-accent-soft { background: $verde-claro; }
+.bg-warning-soft { background: #fff8e1; }
+.bg-orange-soft { background: #fff3e0; }
+.bg-success-soft { background: #e8f5e9; }
+.text-accent { color: $verde-accent !important; }
+.text-orange { color: #e65100 !important; }
+
+.proximo-card {
+  background: $verde-claro;
+  border: 1px solid #e0f0e8;
+}
+
+.paciente-avatar {
+  width: 52px; height: 52px;
+  background: white; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid #e0f0e8;
+}
+
+.cita-item {
+  background: #f8fafb;
+  border: 1px solid #eee;
+  transition: all 0.2s;
+  &:hover { background: $verde-claro; border-color: #e0f0e8; }
+}
+
+.hora-box {
+  background: white; border: 1px solid #e0f0e8;
+  border-radius: 8px; padding: 6px 10px; min-width: 48px;
+}
+
+.detail-label {
+  font-size: 0.7rem; font-weight: 600;
+  text-transform: uppercase; color: #888; margin-bottom: 2px;
+}
+
+.badge-estado {
+  padding: 3px 10px; border-radius: 12px;
+  font-size: 0.7rem; font-weight: 600; white-space: nowrap;
+}
+.badge-agendada { background: #e3f2fd; color: #1565c0; }
+.badge-confirmada { background: #e8f5e9; color: #2e7d32; }
+.badge-llego { background: #f3e5f5; color: #6a1b9a; }
+.badge-atencion { background: #fff3e0; color: #e65100; }
+.badge-completada { background: #e8f5e9; color: #1b5e20; }
+.badge-nopresento { background: #fce4ec; color: #880e4f; }
+.badge-cancelada { background: #ffebee; color: #c62828; }

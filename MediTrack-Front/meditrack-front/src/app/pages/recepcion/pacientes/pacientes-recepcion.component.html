@@ -1,0 +1,61 @@
+<div class="p-4">
+
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+      <h5 class="fw-bold mb-0">Pacientes</h5>
+      <p class="text-muted small mb-0">Listado de pacientes registrados</p>
+    </div>
+  </div>
+
+  <!-- Búsqueda -->
+  <div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body p-3">
+      <div class="input-group">
+        <span class="input-group-text bg-light border-end-0">
+          <i class="bi bi-search text-muted"></i>
+        </span>
+        <input type="text" class="form-control border-start-0 rounded-end-3"
+          placeholder="Buscar paciente por nombre..."
+          [(ngModel)]="busqueda">
+      </div>
+    </div>
+  </div>
+
+  <!-- Cargando -->
+  <div *ngIf="cargando" class="text-center py-5">
+    <div class="spinner-border text-accent"></div>
+  </div>
+
+  <!-- Lista -->
+  <div class="row g-3" *ngIf="!cargando">
+    <div class="col-12 col-md-6 col-lg-4" *ngFor="let p of pacientes">
+      <div class="paciente-card card border-0 shadow-sm rounded-4 p-4">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="avatar-pac">
+            <i class="bi bi-person-circle text-accent fs-3"></i>
+          </div>
+          <div>
+            <div class="fw-semibold">{{ p.nombre }}</div>
+            <div class="text-muted small">
+              {{ p.totalCitas }} cita(s) registrada(s)
+            </div>
+          </div>
+        </div>
+        <div class="ultima-cita rounded-3 p-2">
+          <div class="detail-label">Última cita</div>
+          <div class="small fw-medium">
+            {{ p.ultimaCita.fechaHora | date:'dd/MM/yyyy' }} —
+            {{ p.ultimaCita.nombreEspecialidad }}
+          </div>
+          <div class="small text-muted">
+            Dr/a. {{ p.ultimaCita.nombreDoctor }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="pacientes.length === 0" class="col-12 text-center py-4">
+      <p class="text-muted small">No se encontraron pacientes.</p>
+    </div>
+  </div>
+
+</div>

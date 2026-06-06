@@ -1,0 +1,111 @@
+$verde-accent: #2d9e6b;
+$verde-oscuro: #1a4731;
+$verde-claro: #f0faf5;
+
+.text-accent { color: $verde-accent !important; }
+
+.btn-accent {
+  background: $verde-accent; color: white; border: none;
+  &:hover:not(:disabled) { background: $verde-oscuro; color: white; }
+  &:disabled { opacity: 0.7; }
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: $verde-accent;
+  box-shadow: 0 0 0 3px rgba(45,158,107,0.15);
+}
+
+// Pasos
+.pasos-bar {
+  padding: 1rem 0;
+}
+
+.paso-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: #aaa;
+
+  &.activo { color: $verde-accent; }
+  &.completado { color: $verde-accent; }
+}
+
+.paso-circulo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+
+  .activo & { background: $verde-claro; color: $verde-accent; }
+  .completado & { background: $verde-accent; color: white; }
+}
+
+.paso-linea {
+  flex: 1;
+  height: 2px;
+  background: #e0e0e0;
+  margin-bottom: 18px;
+  &.activa { background: $verde-accent; }
+}
+
+// Opciones
+.opcion-card {
+  border: 2px solid #eee;
+  cursor: pointer;
+  transition: all 0.2s;
+  &:hover { border-color: $verde-accent; background: $verde-claro; }
+  &.seleccionado {
+    border-color: $verde-accent;
+    background: $verde-claro;
+  }
+}
+
+.doc-avatar {
+  width: 40px;
+  height: 40px;
+  background: $verde-claro;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Resumen
+.resumen-card {
+  background: $verde-claro;
+  border: 1px solid #e0f0e8;
+}
+
+.resumen-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 2px;
+}
+
+.resumen-valor {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+// Éxito
+.exito-card {
+  background: $verde-claro;
+  border: 2px solid $verde-accent;
+}
+
+.exito-icon {
+  width: 64px;
+  height: 64px;
+  background: $verde-accent;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

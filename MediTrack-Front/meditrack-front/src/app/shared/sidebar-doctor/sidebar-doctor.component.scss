@@ -1,0 +1,25 @@
+$verde-accent: #2d9e6b;
+$verde-claro: #f0faf5;
+
+.sidebar {
+  width: 240px; min-width: 240px;
+  background: white;
+  border-right: 1px solid #e8f0f5;
+  min-height: calc(100vh - 60px);
+  position: sticky; top: 60px;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+}
+
+.menu-item {
+  color: #555; font-size: 0.9rem; font-weight: 500;
+  transition: all 0.2s; margin: 2px 8px; border-radius: 10px;
+  &:hover { background: $verde-claro; color: $verde-accent; }
+}
+
+.activo {
+  background: $verde-claro !important;
+  color: $verde-accent !important;
+  font-weight: 600 !important;
+  border-left: 3px solid $verde-accent;
+}

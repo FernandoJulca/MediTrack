@@ -1,0 +1,183 @@
+<div class="p-4">
+
+  <!-- Header -->
+  <div class="mb-4">
+    <h5 class="fw-bold mb-0">Mis Informes Médicos</h5>
+    <p class="text-muted small mb-0">
+      Historial de informes generados por tus doctores
+    </p>
+  </div>
+
+  <!-- Cargando -->
+  <div *ngIf="cargando" class="text-center py-5">
+    <div class="spinner-border text-accent"></div>
+  </div>
+
+  <!-- Sin informes -->
+  <div *ngIf="!cargando && citas.length === 0"
+    class="text-center py-5">
+    <i class="bi bi-file-medical display-4 text-muted opacity-50"></i>
+    <h6 class="fw-bold mt-3 text-muted">Sin informes médicos</h6>
+    <p class="text-muted small">
+      Aún no tienes informes. Aparecerán aquí después de tus citas completadas.
+    </p>
+  </div>
+
+  <!-- Lista informes -->
+  <div class="row g-3" *ngIf="!cargando && citas.length > 0">
+    <div class="col-12 col-md-6" *ngFor="let cita of citas">
+      <div class="informe-card card border-0 shadow-sm rounded-4 p-4 h-100">
+
+        <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+          <div class="informe-icon">
+            <i class="bi bi-file-medical text-accent fs-4"></i>
+          </div>
+          <span class="badge-completada px-2 py-1 rounded-pill small">
+            Completada
+          </span>
+        </div>
+
+        <div class="mb-3">
+          <div class="fw-semibold mb-1">{{ cita.motivo }}</div>
+          <div class="text-muted small">
+            <i class="bi bi-person-badge me-1 text-accent"></i>
+            Dr/a. {{ cita.nombreDoctor }}
+          </div>
+          <div class="text-muted small">
+            <i class="bi bi-calendar me-1 text-accent"></i>
+            {{ cita.fechaHora | date:'dd/MM/yyyy' }}
+          </div>
+          <div class="text-muted small">
+            <i class="bi bi-building me-1 text-accent"></i>
+            {{ cita.nombreSede }}
+          </div>
+        </div>
+
+        <!-- Preview diagnóstico -->
+        <div class="preview-box rounded-3 p-2 mb-3">
+          <div class="small text-muted fw-semibold mb-1">Diagnóstico</div>
+          <div class="small text-truncate">
+            {{ cita.informeMedico?.diagnostico }}
+          </div>
+        </div>
+
+        <button class="btn btn-outline-accent w-100 rounded-3 small fw-medium mt-auto"
+          (click)="verInforme(cita)">
+          <i class="bi bi-eye me-2"></i>Ver informe completo
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL INFORME -->
+<div class="modal-overlay" *ngIf="informeSeleccionado"
+  (click)="cerrarInforme()">
+  <div class="modal-panel rounded-4 shadow-lg"
+    (click)="$event.stopPropagation()">
+
+    <div class="modal-header-verde p-4 text-white rounded-top-4">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <h6 class="fw-bold mb-0">
+            <i class="bi bi-file-medical me-2"></i>Informe Médico
+          </h6>
+          <div class="opacity-75 small">
+            {{ informeSeleccionado.fechaHora | date:'dd/MM/yyyy' }} —
+            Dr/a. {{ informeSeleccionado.nombreDoctor }}
+          </div>
+        </div>
+        <button class="btn-close-white" (click)="cerrarInforme()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="p-4">
+
+      <!-- Info cita -->
+      <div class="row g-3 mb-4 pb-3 border-bottom">
+        <div class="col-6">
+          <div class="detail-label">Especialidad</div>
+          <div class="detail-value">
+            {{ informeSeleccionado.nombreEspecialidad }}
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="detail-label">Sede</div>
+          <div class="detail-value">{{ informeSeleccionado.nombreSede }}</div>
+        </div>
+        <div class="col-12">
+          <div class="detail-label">Motivo de consulta</div>
+          <div class="detail-value">{{ informeSeleccionado.motivo }}</div>
+        </div>
+      </div>
+
+      <!-- Contenido del informe -->
+      <div class="row g-3">
+        <div class="col-12">
+          <div class="informe-seccion rounded-3 p-3">
+            <div class="detail-label">
+              <i class="bi bi-thermometer me-1 text-accent"></i>Síntomas
+            </div>
+            <div class="small mt-1">
+              {{ informeSeleccionado.informeMedico?.sintomas }}
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="informe-seccion rounded-3 p-3">
+            <div class="detail-label">
+              <i class="bi bi-clipboard-pulse me-1 text-accent"></i>Diagnóstico
+            </div>
+            <div class="small mt-1">
+              {{ informeSeleccionado.informeMedico?.diagnostico }}
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="informe-seccion rounded-3 p-3">
+            <div class="detail-label">
+              <i class="bi bi-capsule me-1 text-accent"></i>Tratamiento
+            </div>
+            <div class="small mt-1">
+              {{ informeSeleccionado.informeMedico?.tratamiento }}
+            </div>
+          </div>
+        </div>
+        <div class="col-12"
+          *ngIf="informeSeleccionado.informeMedico?.receta">
+          <div class="informe-seccion rounded-3 p-3">
+            <div class="detail-label">
+              <i class="bi bi-prescription me-1 text-accent"></i>Receta
+            </div>
+            <div class="small mt-1">
+              {{ informeSeleccionado.informeMedico?.receta }}
+            </div>
+          </div>
+        </div>
+        <div class="col-12"
+          *ngIf="informeSeleccionado.informeMedico?.observaciones">
+          <div class="informe-seccion rounded-3 p-3">
+            <div class="detail-label">
+              <i class="bi bi-chat-text me-1 text-accent"></i>Observaciones
+            </div>
+            <div class="small mt-1">
+              {{ informeSeleccionado.informeMedico?.observaciones }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end mt-4">
+        <button class="btn btn-outline-secondary rounded-3 small"
+          (click)="cerrarInforme()">
+          Cerrar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

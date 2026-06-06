@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -19,17 +19,11 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
+    private authService: AuthService
   ) {
-    // Si ya está autenticado redirigir al dashboard
-    if (this.authService.estaAutenticado()) {
-      this.router.navigate(['/dashboard']);
-    }
-
     this.formulario = this.fb.group({
       correo: ['', [Validators.required, Validators.email]],
-      contrasena: ['', [Validators.required, Validators.minLength(1)]]
+      contrasena: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
@@ -46,13 +40,10 @@ export class LoginComponent {
     this.error = '';
 
     this.authService.login(this.formulario.value).subscribe({
-      next: () => {
-        this.cargando = false;
-        this.router.navigate(['/dashboard']);
-      },
+      next: () => { this.cargando = false; },
       error: (err) => {
         this.cargando = false;
-        this.error = err.error?.mensaje ?? 'Error al iniciar sesión. Verifica tus credenciales.';
+        this.error = err.error?.mensaje ?? 'Credenciales incorrectas.';
       }
     });
   }

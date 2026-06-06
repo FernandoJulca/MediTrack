@@ -1,0 +1,186 @@
+<div class="p-4">
+
+  <!-- Bienvenida -->
+  <div class="bienvenida rounded-4 p-4 mb-4 text-white">
+    <div class="row align-items-center">
+      <div class="col">
+        <h4 class="fw-bold mb-1">
+          ¡Hola, {{ authService.sesionActual?.nombreCompleto }}! 👋
+        </h4>
+        <p class="opacity-75 mb-0 small">
+          Aquí puedes gestionar tus citas y ver tu historial médico.
+        </p>
+      </div>
+      <div class="col-auto d-none d-md-block">
+        <a routerLink="/paciente/agendar" class="btn btn-light fw-semibold rounded-3">
+          <i class="bi bi-calendar-plus me-2"></i>Nueva Cita
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-4">
+      <div class="stat-card rounded-4 p-4 bg-white border text-center">
+        <div class="stat-icon mx-auto mb-2 icon-total">
+          <i class="bi bi-calendar2 text-accent fs-5"></i>
+        </div>
+        <div class="fw-bold fs-3">{{ totalCitas }}</div>
+        <div class="text-muted small">Total citas</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4">
+      <div class="stat-card rounded-4 p-4 bg-white border text-center">
+        <div class="stat-icon mx-auto mb-2 icon-pendiente">
+          <i class="bi bi-clock text-warning fs-5"></i>
+        </div>
+        <div class="fw-bold fs-3">{{ citasPendientes }}</div>
+        <div class="text-muted small">Pendientes</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4">
+      <div class="stat-card rounded-4 p-4 bg-white border text-center">
+        <div class="stat-icon mx-auto mb-2 icon-completada">
+          <i class="bi bi-check-circle text-success fs-5"></i>
+        </div>
+        <div class="fw-bold fs-3">{{ citasCompletadas }}</div>
+        <div class="text-muted small">Completadas</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+
+    <!-- Próximas citas -->
+    <div class="col-12 col-lg-7">
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="fw-bold mb-0">
+              <i class="bi bi-calendar-week text-accent me-2"></i>Próximas Citas
+            </h6>
+            <a routerLink="/paciente/citas"
+              class="btn btn-sm btn-outline-accent rounded-3 small">
+              Ver todas
+            </a>
+          </div>
+
+          <!-- Cargando -->
+          <div *ngIf="cargando" class="text-center py-4">
+            <div class="spinner-border text-accent"></div>
+          </div>
+
+          <!-- Sin citas -->
+          <div *ngIf="!cargando && citasProximas.length === 0"
+            class="text-center py-4">
+            <i class="bi bi-calendar-x display-6 text-muted opacity-50"></i>
+            <p class="text-muted small mt-2 mb-3">No tienes citas próximas.</p>
+            <a routerLink="/paciente/agendar"
+              class="btn btn-accent rounded-3 btn-sm px-4">
+              Agendar ahora
+            </a>
+          </div>
+
+          <!-- Lista citas -->
+          <div *ngFor="let cita of citasProximas" class="cita-item rounded-3 p-3 mb-3">
+            <div class="d-flex align-items-start gap-3">
+              <div class="cita-fecha text-center flex-shrink-0">
+                <div class="fw-bold fs-5 text-accent">
+                  {{ cita.fechaHora | date:'d' }}
+                </div>
+                <div class="text-muted" style="font-size: 0.7rem; text-transform: uppercase;">
+                  {{ cita.fechaHora | date:'MMM' }}
+                </div>
+              </div>
+              <div class="flex-grow-1">
+                <div class="fw-semibold small">{{ cita.motivo }}</div>
+                <div class="text-muted" style="font-size: 0.78rem;">
+                  <i class="bi bi-person me-1"></i>Dr/a. {{ cita.nombreDoctor }}
+                </div>
+                <div class="text-muted" style="font-size: 0.78rem;">
+                  <i class="bi bi-geo-alt me-1"></i>
+                  <i class="bi bi-clock ms-2 me-1"></i>
+                  {{ cita.fechaHora | date:'h:mm a' }}
+                </div>
+              </div>
+              <span class="badge-estado {{ colorEstado(cita.estado) }}">
+                {{ cita.estado }}
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Accesos rápidos -->
+    <div class="col-12 col-lg-5">
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-body p-4">
+          <h6 class="fw-bold mb-4">
+            <i class="bi bi-grid text-accent me-2"></i>Accesos Rápidos
+          </h6>
+
+          <div class="row g-3">
+            <div class="col-6">
+              <a routerLink="/paciente/agendar"
+                class="acceso-card d-flex flex-column align-items-center
+                  justify-content-center p-3 rounded-3 text-decoration-none text-center">
+                <div class="acceso-icon mb-2 bg-accent-soft">
+                  <i class="bi bi-calendar-plus text-accent fs-4"></i>
+                </div>
+                <span class="small fw-semibold text-dark">Agendar Cita</span>
+              </a>
+            </div>
+            <div class="col-6">
+              <a routerLink="/paciente/citas"
+                class="acceso-card d-flex flex-column align-items-center
+                  justify-content-center p-3 rounded-3 text-decoration-none text-center">
+                <div class="acceso-icon mb-2 bg-blue-soft">
+                  <i class="bi bi-calendar-check text-primary fs-4"></i>
+                </div>
+                <span class="small fw-semibold text-dark">Mis Citas</span>
+              </a>
+            </div>
+            <div class="col-6">
+              <a routerLink="/paciente/informes"
+                class="acceso-card d-flex flex-column align-items-center
+                  justify-content-center p-3 rounded-3 text-decoration-none text-center">
+                <div class="acceso-icon mb-2 bg-purple-soft">
+                  <i class="bi bi-file-medical text-purple fs-4"></i>
+                </div>
+                <span class="small fw-semibold text-dark">Mis Informes</span>
+              </a>
+            </div>
+            <div class="col-6">
+              <a routerLink="/paciente/perfil"
+                class="acceso-card d-flex flex-column align-items-center
+                  justify-content-center p-3 rounded-3 text-decoration-none text-center">
+                <div class="acceso-icon mb-2 bg-orange-soft">
+                  <i class="bi bi-person-gear text-orange fs-4"></i>
+                </div>
+                <span class="small fw-semibold text-dark">Mi Perfil</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Tip del día -->
+          <div class="tip-card mt-4 p-3 rounded-3">
+            <div class="d-flex gap-2">
+              <i class="bi bi-lightbulb text-accent flex-shrink-0 mt-1"></i>
+              <div>
+                <div class="fw-semibold small">Recuerda</div>
+                <div class="text-muted" style="font-size: 0.78rem;">
+                  Llega 10 minutos antes de tu cita para el registro en recepción.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

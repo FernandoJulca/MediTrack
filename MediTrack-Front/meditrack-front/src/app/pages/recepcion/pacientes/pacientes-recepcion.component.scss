@@ -1,0 +1,33 @@
+$verde-accent: #2d9e6b;
+$verde-claro: #f0faf5;
+
+.text-accent { color: $verde-accent !important; }
+
+.form-control:focus {
+  border-color: $verde-accent;
+  box-shadow: 0 0 0 3px rgba(45,158,107,0.15);
+}
+
+.paciente-card {
+  transition: all 0.2s;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(45,158,107,0.1) !important;
+  }
+}
+
+.avatar-pac {
+  width: 48px; height: 48px;
+  background: $verde-claro; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.ultima-cita {
+  background: $verde-claro;
+  border: 1px solid #e0f0e8;
+}
+
+.detail-label {
+  font-size: 0.7rem; font-weight: 600;
+  text-transform: uppercase; color: #888; margin-bottom: 2px;
+}

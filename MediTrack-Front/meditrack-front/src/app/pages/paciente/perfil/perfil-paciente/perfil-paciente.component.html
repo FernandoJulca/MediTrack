@@ -1,0 +1,87 @@
+<div class="p-4">
+
+  <div class="mb-4">
+    <h5 class="fw-bold mb-0">Mi Perfil</h5>
+    <p class="text-muted small mb-0">Información de tu cuenta</p>
+  </div>
+
+  <div class="row g-4">
+
+    <!-- Tarjeta perfil -->
+    <div class="col-12 col-md-4">
+      <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="perfil-header p-4 text-center text-white">
+          <div class="avatar mx-auto mb-3">
+            <i class="bi bi-person-circle display-4 text-white opacity-75"></i>
+          </div>
+          <h5 class="fw-bold mb-0">
+            {{ authService.sesionActual?.nombreCompleto }}
+          </h5>
+          <div class="badge-rol mt-2 d-inline-block">
+            {{ authService.sesionActual?.rol }}
+          </div>
+        </div>
+        <div class="card-body p-4">
+          <div class="info-item mb-3">
+            <div class="detail-label">Correo</div>
+            <div class="small fw-medium">
+              {{ authService.sesionActual?.correo }}
+            </div>
+          </div>
+          <hr>
+          <button class="btn btn-danger w-100 rounded-3 small fw-medium"
+            (click)="cerrarSesion()">
+            <i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info detallada -->
+    <div class="col-12 col-md-8">
+      <div class="card border-0 shadow-sm rounded-4 p-4">
+        <h6 class="fw-bold mb-4">
+          <i class="bi bi-person text-accent me-2"></i>Datos de la cuenta
+        </h6>
+
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <div class="dato-item rounded-3 p-3">
+              <div class="detail-label">Nombre completo</div>
+              <div class="fw-semibold">
+                {{ authService.sesionActual?.nombreCompleto }}
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="dato-item rounded-3 p-3">
+              <div class="detail-label">Correo electrónico</div>
+              <div class="fw-semibold">
+                {{ authService.sesionActual?.correo }}
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="dato-item rounded-3 p-3">
+              <div class="detail-label">Rol en el sistema</div>
+              <div class="fw-semibold">{{ authService.sesionActual?.rol }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Aviso -->
+        <div class="aviso-card rounded-3 p-3 mt-4">
+          <div class="d-flex gap-2">
+            <i class="bi bi-info-circle text-accent flex-shrink-0 mt-1"></i>
+            <div class="small text-muted">
+              Para actualizar tus datos personales, contáctate con
+              recepción en cualquiera de nuestras sedes.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

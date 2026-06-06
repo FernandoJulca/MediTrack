@@ -1,0 +1,210 @@
+<div class="p-4">
+
+  <!-- Header -->
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+      <h5 class="fw-bold mb-0">Mis Citas</h5>
+      <p class="text-muted small mb-0">Historial completo de tus citas médicas</p>
+    </div>
+    <a routerLink="/paciente/agendar" class="btn btn-accent rounded-3 fw-medium">
+      <i class="bi bi-calendar-plus me-2"></i>Nueva Cita
+    </a>
+  </div>
+
+  <!-- Éxito -->
+  <div *ngIf="mensajeExito"
+    class="alert alert-success rounded-3 d-flex align-items-center gap-2 small">
+    <i class="bi bi-check-circle-fill"></i>{{ mensajeExito }}
+  </div>
+
+  <!-- Filtro -->
+  <div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body p-3">
+      <div class="row g-2 align-items-center">
+        <div class="col-12 col-md-4">
+          <select class="form-select form-select-sm rounded-3"
+            [(ngModel)]="filtroEstado" (change)="filtrar()">
+            <option *ngFor="let e of estados" [value]="e.valor">{{ e.etiqueta }}</option>
+          </select>
+        </div>
+        <div class="col-auto">
+          <span class="text-muted small">{{ citasFiltradas.length }} cita(s)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cargando -->
+  <div *ngIf="cargando" class="text-center py-5">
+    <div class="spinner-border text-accent"></div>
+  </div>
+
+  <!-- Sin citas -->
+  <div *ngIf="!cargando && citasFiltradas.length === 0"
+    class="text-center py-5">
+    <i class="bi bi-calendar-x display-4 text-muted opacity-50"></i>
+    <h6 class="fw-bold mt-3 text-muted">No hay citas</h6>
+    <p class="text-muted small">No se encontraron citas con ese filtro.</p>
+    <a routerLink="/paciente/agendar" class="btn btn-accent rounded-3 px-4">
+      Agendar cita
+    </a>
+  </div>
+
+  <!-- Lista -->
+  <div class="row g-3" *ngIf="!cargando && citasFiltradas.length > 0">
+    <div class="col-12" *ngFor="let cita of citasFiltradas">
+      <div class="cita-card card border-0 shadow-sm rounded-4 p-4"
+        (click)="verDetalle(cita)">
+        <div class="row align-items-center g-3">
+
+          <!-- Fecha -->
+          <div class="col-auto">
+            <div class="fecha-box text-center">
+              <div class="fw-bold fs-4 text-accent lh-1">
+                {{ cita.fechaHora | date:'d' }}
+              </div>
+              <div class="text-muted small text-uppercase">
+                {{ cita.fechaHora | date:'MMM yyyy' }}
+              </div>
+              <div class="text-muted small">
+                {{ cita.fechaHora | date:'h:mm a' }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Info -->
+          <div class="col">
+            <div class="fw-semibold">{{ cita.motivo }}</div>
+            <div class="text-muted small mt-1">
+              <i class="bi bi-person-badge me-1 text-accent"></i>
+              Dr/a. {{ cita.nombreDoctor }} —
+              <span class="text-accent">{{ cita.nombreEspecialidad }}</span>
+            </div>
+            <div class="text-muted small">
+              <i class="bi bi-building me-1 text-accent"></i>{{ cita.nombreSede }}
+            </div>
+          </div>
+
+          <!-- Estado y acción -->
+          <div class="col-auto d-flex flex-column align-items-end gap-2">
+            <span class="badge-estado {{ colorEstado(cita.estado) }}">
+              {{ cita.estado }}
+            </span>
+            <button class="btn btn-sm btn-outline-accent rounded-3 small">
+              <i class="bi bi-eye me-1"></i>Ver detalle
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL DETALLE -->
+<div class="modal-overlay" *ngIf="citaSeleccionada" (click)="cerrarDetalle()">
+  <div class="modal-panel rounded-4 shadow-lg" (click)="$event.stopPropagation()">
+
+    <div class="modal-header-verde p-4 text-white rounded-top-4">
+      <div class="d-flex align-items-center justify-content-between">
+        <h6 class="fw-bold mb-0">
+          <i class="bi bi-calendar-check me-2"></i>Detalle de Cita
+        </h6>
+        <button class="btn-close-white" (click)="cerrarDetalle()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="p-4" *ngIf="citaSeleccionada">
+
+      <div class="row g-3 mb-3">
+        <div class="col-6">
+          <div class="detail-item">
+            <div class="detail-label">Fecha y hora</div>
+            <div class="detail-value">
+              {{ citaSeleccionada.fechaHora | date:'dd/MM/yyyy h:mm a' }}
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="detail-item">
+            <div class="detail-label">Estado</div>
+            <span class="badge-estado {{ colorEstado(citaSeleccionada.estado) }}">
+              {{ citaSeleccionada.estado }}
+            </span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="detail-item">
+            <div class="detail-label">Doctor</div>
+            <div class="detail-value">Dr/a. {{ citaSeleccionada.nombreDoctor }}</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="detail-item">
+            <div class="detail-label">Especialidad</div>
+            <div class="detail-value">{{ citaSeleccionada.nombreEspecialidad }}</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="detail-item">
+            <div class="detail-label">Sede</div>
+            <div class="detail-value">{{ citaSeleccionada.nombreSede }}</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="detail-item">
+            <div class="detail-label">Motivo</div>
+            <div class="detail-value">{{ citaSeleccionada.motivo }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Informe médico -->
+      <div *ngIf="citaSeleccionada.informeMedico"
+        class="informe-box rounded-3 p-3 mb-3">
+        <div class="fw-semibold small mb-2">
+          <i class="bi bi-file-medical text-accent me-1"></i>Informe Médico
+        </div>
+        <div class="row g-2">
+          <div class="col-12">
+            <div class="detail-label">Síntomas</div>
+            <div class="small">{{ citaSeleccionada.informeMedico.sintomas }}</div>
+          </div>
+          <div class="col-12">
+            <div class="detail-label">Diagnóstico</div>
+            <div class="small">{{ citaSeleccionada.informeMedico.diagnostico }}</div>
+          </div>
+          <div class="col-12">
+            <div class="detail-label">Tratamiento</div>
+            <div class="small">{{ citaSeleccionada.informeMedico.tratamiento }}</div>
+          </div>
+          <div class="col-12" *ngIf="citaSeleccionada.informeMedico.receta">
+            <div class="detail-label">Receta</div>
+            <div class="small">{{ citaSeleccionada.informeMedico.receta }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Acciones -->
+      <div class="d-flex gap-2 justify-content-end">
+        <button class="btn btn-outline-secondary rounded-3 small"
+          (click)="cerrarDetalle()">
+          Cerrar
+        </button>
+        <button *ngIf="puedeCancel(citaSeleccionada.estado)"
+          class="btn btn-danger rounded-3 small"
+          [disabled]="cancelando"
+          (click)="cancelarCita(citaSeleccionada.id)">
+          <span *ngIf="cancelando"
+            class="spinner-border spinner-border-sm me-1"></span>
+          <i *ngIf="!cancelando" class="bi bi-x-circle me-1"></i>
+          Cancelar cita
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

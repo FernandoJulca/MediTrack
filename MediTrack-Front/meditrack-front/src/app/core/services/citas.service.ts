@@ -22,12 +22,25 @@ export class CitasService {
     return this.http.get<Cita[]>(`${this.URL}/paciente/${pacienteId}`);
   }
 
+  obtenerPorDoctor(doctorId: number): Observable<Cita[]> {
+    return this.http.get<Cita[]>(`${this.URL}/doctor/${doctorId}`);
+  }
+
+  obtenerPorFechaYSede(fecha: Date, sedeId: number): Observable<Cita[]> {
+    const fechaStr = fecha.toISOString().split('T')[0];
+    return this.http.get<Cita[]>(`${this.URL}/sede/${sedeId}/fecha/${fechaStr}`);
+  }
+
   crear(datos: CrearCita): Observable<Cita> {
     return this.http.post<Cita>(this.URL, datos);
   }
 
-  cambiarEstado(id: number, estado: number, observaciones?: string): Observable<Cita> {
-    return this.http.patch<Cita>(`${this.URL}/${id}/estado`, { estado, observaciones });
+  cambiarEstado(id: number, datos: { estado: number; observaciones?: string }): Observable<Cita> {
+    return this.http.patch<Cita>(`${this.URL}/${id}/estado`, datos);
+  }
+
+  crearInforme(datos: any): Observable<Cita> {
+    return this.http.post<Cita>(`${this.URL}/informe`, datos);
   }
 
   cancelar(id: number): Observable<void> {

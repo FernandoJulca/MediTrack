@@ -1,0 +1,33 @@
+$verde-accent: #2d9e6b;
+$verde-oscuro: #1a4731;
+$verde-claro: #f0faf5;
+
+.text-accent { color: $verde-accent !important; }
+
+.perfil-header {
+  background: linear-gradient(135deg, $verde-oscuro, $verde-accent);
+}
+
+.badge-rol {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  padding: 3px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.detail-label {
+  font-size: 0.72rem; font-weight: 600;
+  text-transform: uppercase; color: #888; margin-bottom: 2px;
+}
+
+.dato-item {
+  background: $verde-claro;
+  border: 1px solid #e0f0e8;
+}
+
+.aviso-card {
+  background: #fff8e1;
+  border: 1px solid #ffe082;
+}

@@ -1,0 +1,237 @@
+<div class="p-4">
+
+  <!-- Header -->
+  <div class="bienvenida rounded-4 p-4 mb-4 text-white">
+    <h4 class="fw-bold mb-1">
+      <i class="bi bi-clipboard-pulse me-2"></i>Sala de Atención
+    </h4>
+    <p class="opacity-75 mb-0 small">
+      Gestiona la atención de tus pacientes del día.
+    </p>
+  </div>
+
+  <!-- Mensajes -->
+  <div *ngIf="mensajeExito"
+    class="alert alert-success rounded-3 small d-flex align-items-center gap-2 mb-3">
+    <i class="bi bi-check-circle-fill"></i>{{ mensajeExito }}
+  </div>
+  <div *ngIf="error"
+    class="alert alert-danger rounded-3 small d-flex align-items-center gap-2 mb-3">
+    <i class="bi bi-exclamation-circle"></i>{{ error }}
+  </div>
+
+  <div class="row g-4">
+
+    <!-- Cola de espera -->
+    <div class="col-12 col-lg-4">
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-body p-4">
+          <h6 class="fw-bold mb-4">
+            <i class="bi bi-people text-accent me-2"></i>
+            Cola de Espera
+            <span class="badge bg-accent-soft text-accent ms-2 rounded-pill">
+              {{ cola.length }}
+            </span>
+          </h6>
+
+          <div *ngIf="cargando" class="text-center py-4">
+            <div class="spinner-border text-accent spinner-border-sm"></div>
+          </div>
+
+          <div *ngIf="!cargando && cola.length === 0"
+            class="text-center py-4">
+            <i class="bi bi-people display-6 text-muted opacity-50"></i>
+            <p class="text-muted small mt-2">No hay pacientes en espera.</p>
+          </div>
+
+          <div *ngFor="let cita of cola; let i = index"
+            class="cola-item rounded-3 p-3 mb-2">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <div class="numero-turno">{{ i + 1 }}</div>
+              <div class="flex-grow-1">
+                <div class="fw-semibold small">{{ cita.nombrePaciente }}</div>
+                <div class="text-muted" style="font-size:0.75rem;">
+                  {{ cita.fechaHora | date:'h:mm a' }}
+                </div>
+              </div>
+            </div>
+            <div class="text-muted small mb-2">
+              <i class="bi bi-chat-left-text me-1"></i>{{ cita.motivo }}
+            </div>
+            <button class="btn btn-accent w-100 rounded-3 btn-sm fw-medium"
+              [disabled]="procesando || citaActual !== null"
+              (click)="llamarPaciente(cita)">
+              <span *ngIf="procesando"
+                class="spinner-border spinner-border-sm me-1"></span>
+              <i *ngIf="!procesando" class="bi bi-person-check me-1"></i>
+              Llamar paciente
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Paciente en atención -->
+    <div class="col-12 col-lg-8">
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-body p-4">
+          <h6 class="fw-bold mb-4">
+            <i class="bi bi-person-lines-fill text-accent me-2"></i>
+            Paciente en Atención
+          </h6>
+
+          <!-- Sin paciente -->
+          <div *ngIf="!citaActual" class="text-center py-5">
+            <div class="sin-atencion-icon mx-auto mb-3">
+              <i class="bi bi-clipboard2-pulse display-4 text-muted opacity-50"></i>
+            </div>
+            <h6 class="text-muted fw-bold">Sin paciente en atención</h6>
+            <p class="text-muted small">
+              Llama al siguiente paciente de la cola para comenzar.
+            </p>
+          </div>
+
+          <!-- Paciente actual -->
+          <div *ngIf="citaActual">
+            <!-- Info paciente -->
+            <div class="paciente-actual-card rounded-3 p-4 mb-4">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="avatar-grande">
+                  <i class="bi bi-person-circle text-accent fs-1"></i>
+                </div>
+                <div>
+                  <h5 class="fw-bold mb-0">{{ citaActual.nombrePaciente }}</h5>
+                  <div class="text-muted small">
+                    {{ citaActual.nombreEspecialidad }}
+                  </div>
+                  <span class="badge-atencion px-2 py-1 rounded-pill small mt-1 d-inline-block">
+                    En Atención
+                  </span>
+                </div>
+              </div>
+              <div class="row g-2">
+                <div class="col-6">
+                  <div class="detail-label">Hora de cita</div>
+                  <div class="small fw-medium">
+                    {{ citaActual.fechaHora | date:'h:mm a' }}
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="detail-label">Sede</div>
+                  <div class="small fw-medium">{{ citaActual.nombreSede }}</div>
+                </div>
+                <div class="col-12">
+                  <div class="detail-label">Motivo de consulta</div>
+                  <div class="small fw-medium">{{ citaActual.motivo }}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botón iniciar informe -->
+            <div *ngIf="!mostrarFormulario" class="text-center">
+              <button class="btn btn-accent px-5 rounded-3 fw-semibold"
+                (click)="iniciarFormulario()">
+                <i class="bi bi-clipboard-plus me-2"></i>
+                Iniciar Informe Médico
+              </button>
+            </div>
+
+            <!-- Formulario informe -->
+            <div *ngIf="mostrarFormulario">
+              <h6 class="fw-bold mb-3">
+                <i class="bi bi-file-medical text-accent me-2"></i>
+                Informe Médico
+              </h6>
+              <form [formGroup]="formularioInforme">
+                <div class="row g-3">
+
+                  <div class="col-12">
+                    <label class="form-label small fw-semibold">
+                      Síntomas <span class="text-danger">*</span>
+                    </label>
+                    <textarea class="form-control rounded-3" rows="2"
+                      [class.is-invalid]="formularioInforme.get('sintomas')?.invalid &&
+                        formularioInforme.get('sintomas')?.touched"
+                      formControlName="sintomas"
+                      placeholder="Describe los síntomas del paciente...">
+                    </textarea>
+                    <div class="invalid-feedback small">Campo requerido.</div>
+                  </div>
+
+                  <div class="col-12">
+                    <label class="form-label small fw-semibold">
+                      Diagnóstico <span class="text-danger">*</span>
+                    </label>
+                    <textarea class="form-control rounded-3" rows="2"
+                      [class.is-invalid]="formularioInforme.get('diagnostico')?.invalid &&
+                        formularioInforme.get('diagnostico')?.touched"
+                      formControlName="diagnostico"
+                      placeholder="Diagnóstico médico...">
+                    </textarea>
+                    <div class="invalid-feedback small">Campo requerido.</div>
+                  </div>
+
+                  <div class="col-12">
+                    <label class="form-label small fw-semibold">
+                      Tratamiento <span class="text-danger">*</span>
+                    </label>
+                    <textarea class="form-control rounded-3" rows="2"
+                      [class.is-invalid]="formularioInforme.get('tratamiento')?.invalid &&
+                        formularioInforme.get('tratamiento')?.touched"
+                      formControlName="tratamiento"
+                      placeholder="Tratamiento indicado...">
+                    </textarea>
+                    <div class="invalid-feedback small">Campo requerido.</div>
+                  </div>
+
+                  <div class="col-12 col-md-6">
+                    <label class="form-label small fw-semibold">
+                      Receta <span class="text-muted">(opcional)</span>
+                    </label>
+                    <textarea class="form-control rounded-3" rows="2"
+                      formControlName="receta"
+                      placeholder="Medicamentos recetados...">
+                    </textarea>
+                  </div>
+
+                  <div class="col-12 col-md-6">
+                    <label class="form-label small fw-semibold">
+                      Observaciones <span class="text-muted">(opcional)</span>
+                    </label>
+                    <textarea class="form-control rounded-3" rows="2"
+                      formControlName="observaciones"
+                      placeholder="Observaciones adicionales...">
+                    </textarea>
+                  </div>
+
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                  <button type="button"
+                    class="btn btn-outline-secondary rounded-3"
+                    (click)="mostrarFormulario = false">
+                    Cancelar
+                  </button>
+                  <button type="button"
+                    class="btn btn-accent rounded-3 fw-semibold px-4"
+                    [disabled]="procesando"
+                    (click)="finalizarAtencion()">
+                    <span *ngIf="procesando"
+                      class="spinner-border spinner-border-sm me-2"></span>
+                    <i *ngIf="!procesando"
+                      class="bi bi-check-circle me-2"></i>
+                    {{ procesando ? 'Guardando...' : 'Finalizar Atención' }}
+                  </button>
+                </div>
+
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

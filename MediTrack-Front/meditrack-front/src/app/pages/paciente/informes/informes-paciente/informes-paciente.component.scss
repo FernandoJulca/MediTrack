@@ -1,0 +1,68 @@
+$verde-accent: #2d9e6b;
+$verde-oscuro: #1a4731;
+$verde-claro: #f0faf5;
+
+.text-accent { color: $verde-accent !important; }
+
+.btn-outline-accent {
+  border: 1.5px solid $verde-accent; color: $verde-accent;
+  &:hover { background: $verde-accent; color: white; }
+}
+
+.informe-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(45,158,107,0.12) !important;
+  }
+}
+
+.informe-icon {
+  width: 48px; height: 48px;
+  background: $verde-claro;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.badge-completada { background: #e8f5e9; color: #1b5e20; }
+
+.preview-box {
+  background: $verde-claro;
+  border: 1px solid #e0f0e8;
+}
+
+// Modal
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+}
+
+.modal-panel {
+  background: white;
+  width: 100%; max-width: 560px;
+  max-height: 90vh; overflow-y: auto;
+}
+
+.modal-header-verde {
+  background: linear-gradient(135deg, $verde-oscuro, $verde-accent);
+}
+
+.btn-close-white {
+  background: rgba(255,255,255,0.2); border: none; color: white;
+  width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+  &:hover { background: rgba(255,255,255,0.3); }
+}
+
+.detail-label {
+  font-size: 0.72rem; font-weight: 600;
+  text-transform: uppercase; color: #888; margin-bottom: 2px;
+}
+.detail-value { font-size: 0.88rem; font-weight: 500; }
+
+.informe-seccion {
+  background: $verde-claro;
+  border: 1px solid #e0f0e8;
+}

@@ -1,0 +1,236 @@
+<div class="p-4">
+
+  <!-- Header -->
+  <div class="d-flex align-items-center gap-3 mb-4">
+    <a routerLink="/paciente/citas" class="btn btn-sm btn-light rounded-3">
+      <i class="bi bi-arrow-left"></i>
+    </a>
+    <div>
+      <h5 class="fw-bold mb-0">Agendar Cita</h5>
+      <p class="text-muted small mb-0">Completa el formulario para reservar tu cita</p>
+    </div>
+  </div>
+
+  <!-- Éxito -->
+  <div *ngIf="exito" class="exito-card rounded-4 p-5 text-center">
+    <div class="exito-icon mx-auto mb-3">
+      <i class="bi bi-check-lg text-white fs-3"></i>
+    </div>
+    <h5 class="fw-bold text-accent">¡Cita agendada con éxito!</h5>
+    <p class="text-muted small">Redirigiendo a tus citas...</p>
+    <div class="spinner-border spinner-border-sm text-accent mt-2"></div>
+  </div>
+
+  <div *ngIf="!exito">
+
+    <!-- Pasos -->
+    <div class="pasos-bar d-flex align-items-center gap-2 mb-4">
+      <div class="paso-item" [class.activo]="paso >= 1" [class.completado]="paso > 1">
+        <div class="paso-circulo">
+          <i class="bi" [class.bi-check]="paso > 1" [class.bi-1-circle]="paso <= 1"></i>
+        </div>
+        <span class="small">Lugar</span>
+      </div>
+      <div class="paso-linea" [class.activa]="paso > 1"></div>
+      <div class="paso-item" [class.activo]="paso >= 2" [class.completado]="paso > 2">
+        <div class="paso-circulo">
+          <i class="bi" [class.bi-check]="paso > 2" [class.bi-2-circle]="paso <= 2"></i>
+        </div>
+        <span class="small">Doctor</span>
+      </div>
+      <div class="paso-linea" [class.activa]="paso > 2"></div>
+      <div class="paso-item" [class.activo]="paso >= 3">
+        <div class="paso-circulo">
+          <i class="bi bi-3-circle"></i>
+        </div>
+        <span class="small">Confirmar</span>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div *ngIf="error"
+      class="alert alert-danger rounded-3 small d-flex align-items-center gap-2 mb-3">
+      <i class="bi bi-exclamation-circle flex-shrink-0"></i>{{ error }}
+    </div>
+
+    <form [formGroup]="formulario">
+      <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+
+          <!-- PASO 1 — Sede y Especialidad -->
+          <div *ngIf="paso === 1">
+            <h6 class="fw-bold mb-4">
+              <i class="bi bi-geo-alt text-accent me-2"></i>
+              Selecciona sede y especialidad
+            </h6>
+
+            <div class="mb-4">
+              <label class="form-label small fw-semibold">Sede</label>
+              <div class="row g-3">
+                <div class="col-12 col-md-4" *ngFor="let sede of sedes">
+                  <div class="opcion-card rounded-3 p-3"
+                    [class.seleccionado]="formulario.get('sedeId')?.value == sede.id"
+                    (click)="formulario.patchValue({sedeId: sede.id})">
+                    <div class="fw-semibold small">{{ sede.nombre }}</div>
+                    <div class="text-muted" style="font-size:0.75rem;">
+                      {{ sede.direccion }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="f['sedeId'].invalid && f['sedeId'].touched"
+                class="text-danger small mt-1">Selecciona una sede.</div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label small fw-semibold">Especialidad</label>
+              <div class="row g-3">
+                <div class="col-6 col-md-3" *ngFor="let esp of especialidades">
+                  <div class="opcion-card rounded-3 p-3 text-center"
+                    [class.seleccionado]="formulario.get('especialidadId')?.value == esp.id"
+                    (click)="formulario.patchValue({especialidadId: esp.id});
+                      formulario.patchValue({doctorId:''});
+                      onEspecialidadChange()">
+                    <i class="bi {{ esp.icono }} text-accent fs-5 mb-1 d-block"></i>
+                    <div class="small fw-medium">{{ esp.nombre }}</div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="f['especialidadId'].invalid && f['especialidadId'].touched"
+                class="text-danger small mt-1">Selecciona una especialidad.</div>
+            </div>
+
+            <div class="d-flex justify-content-end">
+              <button type="button" class="btn btn-accent rounded-3 px-4"
+                [disabled]="!f['sedeId'].value || !f['especialidadId'].value"
+                (click)="siguientePaso()">
+                Siguiente <i class="bi bi-arrow-right ms-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- PASO 2 — Doctor y Fecha -->
+          <div *ngIf="paso === 2">
+            <h6 class="fw-bold mb-4">
+              <i class="bi bi-person-badge text-accent me-2"></i>
+              Selecciona doctor y fecha
+            </h6>
+
+            <div class="mb-4">
+              <label class="form-label small fw-semibold">Doctor</label>
+              <div *ngIf="doctores.length === 0"
+                class="text-muted small p-3 bg-light rounded-3">
+                <i class="bi bi-info-circle me-1"></i>
+                No hay doctores disponibles para esta especialidad.
+              </div>
+              <div class="row g-3">
+                <div class="col-12 col-md-6" *ngFor="let doc of doctores">
+                  <div class="opcion-card rounded-3 p-3"
+                    [class.seleccionado]="formulario.get('doctorId')?.value == doc.id"
+                    (click)="formulario.patchValue({doctorId: doc.id})">
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="doc-avatar">
+                        <i class="bi bi-person-circle text-accent fs-4"></i>
+                      </div>
+                      <div>
+                        <div class="fw-semibold small">Dr/a. {{ doc.nombreCompleto }}</div>
+                        <div class="text-muted" style="font-size:0.75rem;">
+                          <span *ngFor="let h of doc.horarios | slice:0:2"
+                            class="me-1">{{ h.nombreDia }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="f['doctorId'].invalid && f['doctorId'].touched"
+                class="text-danger small mt-1">Selecciona un doctor.</div>
+            </div>
+
+            <div class="row g-3 mb-4">
+              <div class="col-12 col-md-6">
+                <label class="form-label small fw-semibold">Fecha y hora</label>
+                <input type="datetime-local" class="form-control rounded-3"
+                  [class.is-invalid]="f['fechaHora'].invalid && f['fechaHora'].touched"
+                  formControlName="fechaHora">
+                <div class="invalid-feedback small">Selecciona fecha y hora.</div>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label small fw-semibold">Motivo de consulta</label>
+                <textarea class="form-control rounded-3" rows="3"
+                  [class.is-invalid]="f['motivo'].invalid && f['motivo'].touched"
+                  formControlName="motivo"
+                  placeholder="Describe brevemente el motivo..."></textarea>
+                <div class="invalid-feedback small">Mínimo 5 caracteres.</div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <button type="button" class="btn btn-outline-secondary rounded-3 px-4"
+                (click)="anteriorPaso()">
+                <i class="bi bi-arrow-left me-2"></i>Atrás
+              </button>
+              <button type="button" class="btn btn-accent rounded-3 px-4"
+                [disabled]="!f['doctorId'].value || !f['fechaHora'].value || !f['motivo'].value"
+                (click)="siguientePaso()">
+                Siguiente <i class="bi bi-arrow-right ms-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- PASO 3 — Confirmación -->
+          <div *ngIf="paso === 3">
+            <h6 class="fw-bold mb-4">
+              <i class="bi bi-check-circle text-accent me-2"></i>
+              Confirma tu cita
+            </h6>
+
+            <div class="resumen-card rounded-3 p-4 mb-4">
+              <div class="row g-3">
+                <div class="col-6">
+                  <div class="resumen-label">Sede</div>
+                  <div class="resumen-valor">{{ sedeSeleccionada?.nombre }}</div>
+                </div>
+                <div class="col-6">
+                  <div class="resumen-label">Especialidad</div>
+                  <div class="resumen-valor">{{ especialidadSeleccionada?.nombre }}</div>
+                </div>
+                <div class="col-6">
+                  <div class="resumen-label">Doctor</div>
+                  <div class="resumen-valor">
+                    Dr/a. {{ doctorSeleccionado?.nombreCompleto }}
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="resumen-label">Fecha y hora</div>
+                  <div class="resumen-valor">
+                    {{ formulario.get('fechaHora')?.value | date:'dd/MM/yyyy h:mm a' }}
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="resumen-label">Motivo</div>
+                  <div class="resumen-valor">{{ formulario.get('motivo')?.value }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <button type="button" class="btn btn-outline-secondary rounded-3 px-4"
+                (click)="anteriorPaso()">
+                <i class="bi bi-arrow-left me-2"></i>Atrás
+              </button>
+              <button type="button" class="btn btn-accent rounded-3 px-4 fw-semibold"
+                [disabled]="cargando" (click)="agendar()">
+                <span *ngIf="cargando"
+                  class="spinner-border spinner-border-sm me-2"></span>
+                <i *ngIf="!cargando" class="bi bi-calendar-check me-2"></i>
+                {{ cargando ? 'Agendando...' : 'Confirmar Cita' }}
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
